@@ -67,6 +67,8 @@ public class Photoshop extends Application {
             @Override
             public void handle(ActionEvent event) {
                 System.out.println("Gamma Correction");
+                Image newImage = gammaCorrect(imageView.getImage());
+                imageView.setImage(newImage);
             }
         });
 
@@ -133,7 +135,83 @@ public class Photoshop extends Application {
 		}
 		return inverted_image;
 	}
+	
+	public Image gammaCorrect(Image image) {
+		final double GAMMA_VALUE = 2.8;
+		//Find the width and height of the image to be process
+		int width = (int)image.getWidth();
+        int height = (int)image.getHeight();
+		//Create a new image of that width and height
+		WritableImage newImage = new WritableImage(width, height);
+		//Get an interface to write to that image memory
+		PixelWriter w = newImage.getPixelWriter();
+		//Get an interface to read from the original image passed as the parameter to the function
+		PixelReader newReader = image.getPixelReader();
 		
+		// Precalculate the gamma values for each possible value for efficiency
+		double gammaLookup[] = new double[256];
+		for (int i = 0; i < 256; i++) {
+			gammaLookup[i] = Math.pow((double)i/255, 1.0/GAMMA_VALUE);
+		}
+		
+		//Iterate over all pixels
+		for(int y = 0; y < height; y++) {
+			for(int x = 0; x < width; x++) {
+				//For each pixel, get the colour
+				Color color = newReader.getColor(x, y);
+				//Do something (in this case invert) - the getColor function returns colours as 0..1 doubles (we could multiply by 255 if we want 0-255 colours)
+				color = Color.color(
+						gammaLookup[(int)(color.getRed() * 255)],
+						gammaLookup[(int)(color.getGreen() * 255)],
+						gammaLookup[(int)(color.getBlue() * 255)]);
+				
+				//Apply the new colour
+				w.setColor(x, y, color);
+			}
+		}
+		return newImage;
+	}
+		
+//	public Image contrastStretch(Image image) {
+//		final int R1 = 20;
+//		final int S1 = 20;
+//		final int R2 = 20;
+//		final int S2 = 20;
+//		
+//		//Find the width and height of the image to be process
+//		int width = (int)image.getWidth();
+//        int height = (int)image.getHeight();
+//		//Create a new image of that width and height
+//		WritableImage newImage = new WritableImage(width, height);
+//		//Get an interface to write to that image memory
+//		PixelWriter w = newImage.getPixelWriter();
+//		//Get an interface to read from the original image passed as the parameter to the function
+//		PixelReader newReader = image.getPixelReader();
+//		
+//		// Precalculate the gamma values for each possible colour value
+//		double gammaLookup[] = new double[256];
+//		for (int i = 0; i < 256; i++) {
+//			//loop
+//		}
+//		
+//		//Iterate over all pixels
+//		for(int y = 0; y < height; y++) {
+//			for(int x = 0; x < width; x++) {
+//				//For each pixel, get the colour
+//				Color color = newReader.getColor(x, y);
+//				// Lookup the gamma-corrected value for each colour (saves a lot of computation)
+//				color = Color.color(
+//						gammaLookup[(int)(color.getRed() * 255)],
+//						gammaLookup[(int)(color.getGreen() * 255)],
+//						gammaLookup[(int)(color.getBlue() * 255)]);
+//				
+//				//Apply the new colour
+//				w.setColor(x, y, color);
+//			}
+//		}
+//		return newImage;
+//	}
+	
     public static void main(String[] args) {
         launch();
     }
