@@ -226,6 +226,7 @@ public class Photoshop extends Application {
 				Color color = newReader.getColor(x, y);
 				
 				double colours[] = {color.getRed(), color.getGreen(), color.getBlue()};
+				
 				for (int i = 0; i < 3; i++) {
 					if (colours[i] < (R1/255)) {
 						colours[i] = colours[i] * stretchLookup[0];
