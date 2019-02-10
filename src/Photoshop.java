@@ -1,4 +1,9 @@
-
+/**
+ * CS-255 Computer Graphics
+ * Assignment
+ * 
+ * @author Matt Hall, using 
+ */
 /*
 CS-255 Getting started code for the assignment
 I do not give you permission to post this code online
@@ -19,7 +24,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
