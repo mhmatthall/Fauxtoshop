@@ -45,9 +45,9 @@
         <Menu fx:id="menuAbout" mnemonicParsing="false" text="About" />
       </menus>
     </MenuBar>
-    <SplitPane dividerPositions="0.0426, 0.2179, 0.7421" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+    <SplitPane fx:id="pneMainSplit" dividerPositions="0.0426, 0.2179, 0.7421" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
       <items>
-            <Pane maxWidth="50.0" minWidth="50.0" prefWidth="50.0" style="-fx-background-color: rgb(48,79,254);">
+            <Pane fx:id="pneToolSelector" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" style="-fx-background-color: rgb(48,79,254);">
                <children>
                   <ImageView fx:id="btnGamma" fitHeight="50.0" fitWidth="50.0" onMouseClicked="#btnGammaClicked" onMouseEntered="#btnGammaStartHover" onMouseExited="#btnGammaEndHover" opacity="0.5" pickOnBounds="true" preserveRatio="true">
                      <image>
