@@ -165,7 +165,7 @@ public class Photoshop extends Application {
 		// parameter to the function
 		PixelReader newReader = image.getPixelReader();
 
-		// Precalculate the gamma values for each possible value for efficiency
+		// Pre-calculate the gamma values for each possible value for efficiency
 		double gammaLookup[] = new double[256];
 		for (int i = 0; i < 256; i++) {
 			gammaLookup[i] = Math.pow((double) i / 255, 1.0 / GAMMA_VALUE);
