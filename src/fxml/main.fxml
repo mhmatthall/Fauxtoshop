@@ -8,7 +8,6 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.image.Image?>
@@ -27,13 +26,13 @@
         <Menu mnemonicParsing="false" text="File">
           <items>
             <MenuItem fx:id="menuFileNew" mnemonicParsing="false" text="New" />
-            <MenuItem fx:id="menuFileOpen" mnemonicParsing="false" text="Open…" />
+            <MenuItem fx:id="menuFileOpen" mnemonicParsing="false" onAction="#openFile" text="Open…" />
             <SeparatorMenuItem mnemonicParsing="false" />
             <MenuItem fx:id="menuFileClose" mnemonicParsing="false" text="Close" />
             <MenuItem fx:id="menuFileSave" mnemonicParsing="false" text="Save" />
             <MenuItem fx:id="menuFileSaveAs" mnemonicParsing="false" text="Save As…" />
             <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem fx:id="menuFileQuit" mnemonicParsing="false" text="Quit" />
+            <MenuItem fx:id="menuFileQuit" mnemonicParsing="false" onAction="#closeProgram" text="Quit" />
           </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Edit">
@@ -61,20 +60,12 @@
                   </ImageView>
                </children>
             </Pane>
-        <AnchorPane fx:id="pneToolPane">
-          <children>
-            <Label fx:id="lblCurrentToolName" layoutX="14.0" layoutY="14.0" style="&#10;" text="Tool" textFill="#304ffe" wrapText="false">
-              <font>
-                <Font size="18.0" fx:id="x1" />
-              </font>
-            </Label>
-          </children>
-        </AnchorPane>
-        <ScrollPane prefHeight="-1.0" prefWidth="-1.0">
-          <content>
-            <AnchorPane id="Content" minHeight="-1.0" minWidth="-1.0" prefHeight="545.0" prefWidth="430.0" />
-          </content>
-        </ScrollPane>
+        <AnchorPane fx:id="pneToolPane" maxWidth="206.0" prefHeight="751.0" prefWidth="206.0" />
+            <Pane prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <ImageView fx:id="imgImageViewer" fitHeight="373.0" fitWidth="533.0" layoutX="46.0" layoutY="135.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </Pane>
         <AnchorPane maxWidth="300.0" minWidth="300.0" prefWidth="300.0" SplitPane.resizableWithParent="false">
           <children>
                   <Label fx:id="lblHistogram" layoutX="14.0" layoutY="14.0" style="&#10;" text="Histogram" textFill="#304ffe" wrapText="false">
