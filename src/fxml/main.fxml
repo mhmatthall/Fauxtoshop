@@ -19,7 +19,7 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<VBox minHeight="400.0" minWidth="800.0" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainViewController">
+<VBox minHeight="400.0" minWidth="800.0" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainViewController">
   <children>
     <MenuBar prefHeight="0.0" prefWidth="922.0" VBox.vgrow="NEVER">
       <menus>
@@ -60,7 +60,10 @@
                   </ImageView>
                </children>
             </Pane>
-        <AnchorPane fx:id="pneToolPane" maxWidth="206.0" prefHeight="751.0" prefWidth="206.0" />
+        <AnchorPane fx:id="pneToolPane" maxWidth="206.0" prefHeight="751.0" prefWidth="206.0">
+               <children>
+                  <Label layoutX="14.0" layoutY="14.0" text="Open a file to continue" wrapText="true" />
+               </children></AnchorPane>
             <Pane prefHeight="200.0" prefWidth="200.0">
                <children>
                   <ImageView fx:id="imgImageViewer" fitHeight="373.0" fitWidth="533.0" layoutX="46.0" layoutY="135.0" pickOnBounds="true" preserveRatio="true" />
