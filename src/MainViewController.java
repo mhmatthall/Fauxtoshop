@@ -7,6 +7,7 @@ import java.util.Arrays;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
@@ -96,12 +97,20 @@ public class MainViewController {
 	public void setStage(Stage stage) {
 		this.stage = stage;
 	}
+	
+	public Image getImage() {
+		return imgImageViewer.getImage();
+	}
+	
+	public void setImage(Image newImage) {
+		imgImageViewer.setImage(newImage);
+	}
 
 	// FXML Constructor
 	@FXML
 	public void initialize() {
-		// Select the gamma menu as the default when the program loads
-		btnGammaClicked(null);
+		// Disable the controls until the user loads a file
+		pneMainSplit.disableProperty().set(true);
 	}
 
 	// Toolbar menu methods
@@ -126,6 +135,10 @@ public class MainViewController {
 			imgImageViewer.setImage(img); // Load the image onto the main image editor
 
 			stage.setTitle("Photoshop - '" + chosenImage.getName() + "'");
+			
+			// Re-enable the UI
+			pneMainSplit.disableProperty().set(false);
+			btnGammaClicked(null);
 		}
 	}
 
@@ -177,16 +190,21 @@ public class MainViewController {
 	 * @param fileLocation The location of the tool's corresponding FXML file
 	 */
 	private void changeTool(String fileLocation) {
-		Pane newPane;	// Create a blank pane
-		try {
-			// Load the new tool onto the blank pane
-			newPane = FXMLLoader.load(getClass().getResource(fileLocation));
-			pneToolPane.getChildren().add(newPane); // Add the nodes to the new pane
+		if (!pneMainSplit.isDisable()) {
+			Pane newPane; // Create a blank pane
+			try {
+				// Load the new tool onto the blank pane
+				FXMLLoader loader = new FXMLLoader(getClass().getResource(fileLocation));				
+				newPane = loader.load();
 
-		} catch (IOException ex) {
-			// If no such FXML file could be found
-			System.out.println("-ERROR: TOOL FXML FILE NOT FOUND------------------");
-			ex.printStackTrace();
+				// Add the nodes to the new pane
+				pneToolPane.getChildren().add(newPane);
+				
+			} catch (IOException ex) {
+				// If no such FXML file could be found
+				System.out.println("-ERROR: TOOL FXML FILE NOT FOUND------------------");
+				ex.printStackTrace();
+			}
 		}
 	}
 }
