@@ -21,7 +21,7 @@ public class MenuGammaController {
 	private final int NUMBER_PRECISION = 2;
 	
 	private double gammaValue = 1.0;
-	private Image image;
+	private Image processedImage;
 
     @FXML
     private AnchorPane pneGammaToolPane;
@@ -46,16 +46,28 @@ public class MenuGammaController {
     
     @FXML
     private CheckBox chkShowChanges;
-
-    @FXML
-    void applyChanges(ActionEvent event) {
-    	
-    }
     
     @FXML
     private void initialize() {
-    	//updateGammaValue(gammaValue);
-    	// something to do with .addListener
+    	updateGammaValue(gammaValue);
+    }
+    
+    @FXML
+    void showChangesBoxChanged(ActionEvent event) {
+    	if (chkShowChanges.isSelected()) {
+    		System.out.println("I'm doing things when selected");
+    		ImageConfig.setUneditedImage(ImageConfig.getImage());
+    		ImageConfig.setImage(processedImage);
+    	} else {
+    		System.out.println("I'm doing things when UNselected");
+    		ImageConfig.setImage(ImageConfig.getUneditedImage());
+    	}
+    }
+    
+    @FXML
+    void applyChanges(ActionEvent event) {
+    	ImageConfig.setImage(processedImage);
+    	System.out.println("I have set the processed image");
     }
     
     @FXML
@@ -70,7 +82,7 @@ public class MenuGammaController {
 
     @FXML
     void gammaValueScrolled(ScrollEvent event) {
-    	updateGammaValue(gammaValue + event.getDeltaX() * 0.25);
+    	updateGammaValue(gammaValue + event.getDeltaY() * 0.0125);
     }
 
     @FXML
@@ -79,34 +91,33 @@ public class MenuGammaController {
     }
     
     private void updateGammaValue(double gammaValue) {
-    	this.gammaValue = round(gammaValue, NUMBER_PRECISION);
+    	this.gammaValue = Math.floor(gammaValue * 100) / 100;
     	
+    	// Update the UI elements with the new data
     	txtGammaValue.setText(String.valueOf(gammaValue));
     	sldGammaSlider.setValue(gammaValue);
     	
-    	if (chkShowChanges.isSelected()) {
-    		gammaCorrect(image, gammaValue);    		
+    	// Only process the image if present
+    	if (ImageConfig.getImage() != null) {
+    		System.out.println("I found the image");
+    		processedImage = gammaCorrection(ImageConfig.getImage(), gammaValue);    		
+    	} else {
+    		System.out.println("There's no image");
     	}
     }
     
-    private double round(double x, int decimalPlaces) {
-    	x = x * (10 * decimalPlaces);
-    	int temp = (int)x;
-    	return temp / (10 * decimalPlaces);
-    }
-    
-    public Image gammaCorrect(Image image, double gammaValue) {
-		// Find the dimensions of the image to be processed
-		int width = (int) image.getWidth();
-		int height = (int) image.getHeight();
+    private Image gammaCorrection(Image sourceImage, double gammaValue) {
+		// Find the dimensions of the source image
+		int width = (int) sourceImage.getWidth();
+		int height = (int) sourceImage.getHeight();
 		
-		// Create a new image of that width and height
+		// Create a new image
 		WritableImage newImage = new WritableImage(width, height);
 		// Get an interface to write to that image memory
-		PixelWriter w = newImage.getPixelWriter();
+		PixelWriter writer = newImage.getPixelWriter();
 		// Get an interface to read from the original image passed as the
 		// parameter to the function
-		PixelReader newReader = image.getPixelReader();
+		PixelReader reader = sourceImage.getPixelReader();
 
 		// Pre-calculate the gamma values for each possible value for efficiency
 		double gammaLookup[] = new double[256];
@@ -118,21 +129,16 @@ public class MenuGammaController {
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
 				// For each pixel, get the colour
-				Color color = newReader.getColor(x, y);
-				// Do something (in this case invert) - the getColor function
-				// returns colours as 0..1 doubles (we could multiply by 255 if
-				// we want 0-255 colours)
+				Color color = reader.getColor(x, y);
+				
 				color = Color.color(gammaLookup[(int) (color.getRed() * 255)],
 						gammaLookup[(int) (color.getGreen() * 255)], gammaLookup[(int) (color.getBlue() * 255)]);
 
 				// Apply the new colour
-				w.setColor(x, y, color);
+				writer.setColor(x, y, color);
 			}
 		}
+		System.out.println("I have corrected the gamma.");
 		return newImage;
-	}
-
-	public void setParent(MainViewController parent) {
-		this.parent = parent;
 	}
 }
