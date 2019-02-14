@@ -24,7 +24,7 @@ public class Photoshop2019 extends Application {
 			
 			// Assign and customise the stage
 			stage = mainStage;
-			stage.setTitle("Photoshop Weyy");
+			stage.setTitle("Photoshop");
 			
 			// Pass the stage into the controller so we can easily use it
 			MainViewController controller = loader.getController();
