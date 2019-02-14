@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="pneGammaToolPane" prefHeight="751.0" prefWidth="206.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MenuGammaController">
+<AnchorPane fx:id="pneGammaToolPane" prefHeight="751.0" prefWidth="206.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MenuGammaController">
    <children>
       <Label layoutX="14.0" layoutY="124.0" text="Value:" />
       <TextField fx:id="txtGammaValue" layoutX="51.0" layoutY="120.0" onAction="#gammaValueUpdated" onScroll="#gammaValueScrolled" prefHeight="25.0" prefWidth="53.0" />
@@ -19,9 +19,9 @@
             <Font size="18.0" fx:id="x1" />
          </font>
       </Label>
-      <Slider fx:id="sldGammaSlider" blockIncrement="0.5" layoutX="14.0" layoutY="159.0" majorTickUnit="2.5" max="10.0" minWidth="178.0" minorTickCount="4" onKeyPressed="#gammaSliderShifted" onMouseDragged="#gammaSliderUpdated" prefHeight="14.0" prefWidth="178.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
+      <Slider fx:id="sldGammaSlider" blockIncrement="0.5" layoutX="14.0" layoutY="159.0" majorTickUnit="2.5" max="10.0" minWidth="178.0" minorTickCount="4" onKeyPressed="#gammaSliderShifted" onMouseReleased="#gammaSliderUpdated" prefHeight="14.0" prefWidth="178.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
       <Separator layoutX="3.0" layoutY="106.0" prefWidth="200.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="3.0" />
-      <Button fx:id="btnApply" layoutX="144.0" layoutY="711.0" mnemonicParsing="false" onAction="#applyChanges" text="Apply" AnchorPane.rightAnchor="14.800000000000011" />
-      <CheckBox fx:id="chkShowChanges" layoutX="16.0" layoutY="691.0" mnemonicParsing="false" text="Show changes" AnchorPane.leftAnchor="16.0" />
+      <Button fx:id="btnApply" layoutX="144.0" layoutY="711.0" mnemonicParsing="false" onAction="#applyChanges" text="Apply" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="14.800000000000011" />
+      <CheckBox fx:id="chkShowChanges" layoutX="16.0" layoutY="691.0" mnemonicParsing="false" onAction="#showChangesBoxChanged" text="Show changes" AnchorPane.bottomAnchor="43.0" AnchorPane.leftAnchor="16.0" />
    </children>
 </AnchorPane>
