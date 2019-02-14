@@ -1,7 +1,5 @@
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
@@ -15,8 +13,10 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+
 /**
  * The gamma correction module for the CS-255 Photoshop coursework.
+ * 
  * @author Matt Hall (961500)
  */
 public class MenuGammaController extends ToolController {
@@ -96,7 +96,7 @@ public class MenuGammaController extends ToolController {
 					// Get the unedited image for the first time
 					uneditedImage = parentController.getImage();
 				}
-				
+
 				processedImage = gammaCorrection(uneditedImage, gammaValue);
 				updateImage();
 			}
