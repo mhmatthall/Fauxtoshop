@@ -202,7 +202,7 @@ public class MainViewController {
 				// Load the new tool onto the blank pane
 				FXMLLoader loader = new FXMLLoader(getClass().getResource(fileLocation));				
 				newPane = loader.load();	// It's not that it can't load the file, it's that it can't find the parent yet
-				MenuGammaController controller = loader.getController();
+				ToolController controller = loader.getController();
 				controller.setParentController(this);
 
 				// Add the nodes to the new pane

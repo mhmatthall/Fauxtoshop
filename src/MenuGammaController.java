@@ -19,15 +19,11 @@ import javafx.scene.text.Font;
  * The gamma correction module for the CS-255 Photoshop coursework.
  * @author Matt Hall (961500)
  */
-public class MenuGammaController {
+public class MenuGammaController extends ToolController {
 	/**
 	 * The number of decimal places that values will be rounded to.
 	 */
 	private final int NUMBER_PRECISION = 2;
-
-	private MainViewController parentController;
-	private Image processedImage;
-	private Image uneditedImage;
 	private double gammaValue = 1.0;
 
 	@FXML
@@ -49,24 +45,8 @@ public class MenuGammaController {
 	private Slider sldGammaSlider;
 
 	@FXML
-	private Button btnApply;
-
-	@FXML
-	private CheckBox chkShowChanges;
-
-	@FXML
 	private void initialize() {
 		updateGammaValue(gammaValue);
-	}
-
-	@FXML
-	void showChangesBoxChanged(ActionEvent event) {
-		updateImage();
-	}
-	
-	@FXML
-	void applyButtonClicked(ActionEvent event) {
-		applyChanges();
 	}
 
 	@FXML
@@ -87,43 +67,6 @@ public class MenuGammaController {
 	@FXML
 	void gammaValueUpdated(ActionEvent event) {
 		updateGammaValue(Double.valueOf(txtGammaValue.getText()));
-	}
-
-	/**
-	 * Sets the parent controller of this controller in order to integrate it
-	 * into the program.
-	 * 
-	 * @param parentController
-	 *            The origin controller
-	 */
-	public void setParentController(MainViewController parentController) {
-		this.parentController = parentController;
-	}
-
-	/**
-	 * Saves the new image when the user is happy with the changes they have
-	 * made.
-	 */
-	private void applyChanges() {
-		parentController.setImage(processedImage);
-		uneditedImage = processedImage;
-		updateGammaValue(gammaValue);
-	}
-
-	/**
-	 * Refresh the image being displayed, and show the image if the user has
-	 * selected to view its changes
-	 */
-	private void updateImage() {
-		// Ignore if the image is unchanged
-		if (uneditedImage != null) {
-			// If the user wants to show changes as they're being made
-			if (chkShowChanges.isSelected()) {
-				parentController.setImage(processedImage);
-			} else {
-				parentController.setImage(uneditedImage);
-			}
-		}
 	}
 
 	/**
