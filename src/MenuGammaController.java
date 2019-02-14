@@ -15,102 +15,165 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.stage.Stage;
-
+/**
+ * The gamma correction module for the CS-255 Photoshop coursework.
+ * @author Matt Hall (961500)
+ */
 public class MenuGammaController {
+	/**
+	 * The number of decimal places that values will be rounded to.
+	 */
 	private final int NUMBER_PRECISION = 2;
-	
-	private double gammaValue = 1.0;
+
+	private MainViewController parentController;
 	private Image processedImage;
+	private Image uneditedImage;
+	private double gammaValue = 1.0;
 
-    @FXML
-    private AnchorPane pneGammaToolPane;
+	@FXML
+	private AnchorPane pneGammaToolPane;
 
-    @FXML
-    private TextField txtGammaValue;
+	@FXML
+	private TextField txtGammaValue;
 
-    @FXML
-    private Label lblToolDescription;
+	@FXML
+	private Label lblToolDescription;
 
-    @FXML
-    private Label lblToolName;
+	@FXML
+	private Label lblToolName;
 
-    @FXML
-    private Font x1;
+	@FXML
+	private Font x1;
 
-    @FXML
-    private Slider sldGammaSlider;
-    
-    @FXML
-    private Button btnApply;
-    
-    @FXML
-    private CheckBox chkShowChanges;
-    
-    @FXML
-    private void initialize() {
-    	updateGammaValue(gammaValue);
-    }
-    
-    @FXML
-    void showChangesBoxChanged(ActionEvent event) {
-    	if (chkShowChanges.isSelected()) {
-    		System.out.println("I'm doing things when selected");
-    		ImageConfig.setUneditedImage(ImageConfig.getImage());
-    		ImageConfig.setImage(processedImage);
-    	} else {
-    		System.out.println("I'm doing things when UNselected");
-    		ImageConfig.setImage(ImageConfig.getUneditedImage());
-    	}
-    }
-    
-    @FXML
-    void applyChanges(ActionEvent event) {
-    	ImageConfig.setImage(processedImage);
-    	System.out.println("I have set the processed image");
-    }
-    
-    @FXML
-    void gammaSliderShifted(KeyEvent event) {
-    	updateGammaValue(sldGammaSlider.getValue());
-    }
+	@FXML
+	private Slider sldGammaSlider;
 
-    @FXML
-    void gammaSliderUpdated(MouseEvent event) {
-    	updateGammaValue(sldGammaSlider.getValue());
-    }
+	@FXML
+	private Button btnApply;
 
-    @FXML
-    void gammaValueScrolled(ScrollEvent event) {
-    	updateGammaValue(gammaValue + event.getDeltaY() * 0.0125);
-    }
+	@FXML
+	private CheckBox chkShowChanges;
 
-    @FXML
-    void gammaValueUpdated(ActionEvent event) {
-    	updateGammaValue(Double.valueOf(txtGammaValue.getText()));
-    }
-    
-    private void updateGammaValue(double gammaValue) {
-    	this.gammaValue = Math.floor(gammaValue * 100) / 100;
-    	
-    	// Update the UI elements with the new data
-    	txtGammaValue.setText(String.valueOf(gammaValue));
-    	sldGammaSlider.setValue(gammaValue);
-    	
-    	// Only process the image if present
-    	if (ImageConfig.getImage() != null) {
-    		System.out.println("I found the image");
-    		processedImage = gammaCorrection(ImageConfig.getImage(), gammaValue);    		
-    	} else {
-    		System.out.println("There's no image");
-    	}
-    }
-    
-    private Image gammaCorrection(Image sourceImage, double gammaValue) {
+	@FXML
+	private void initialize() {
+		updateGammaValue(gammaValue);
+	}
+
+	@FXML
+	void showChangesBoxChanged(ActionEvent event) {
+		updateImage();
+	}
+	
+	@FXML
+	void applyButtonClicked(ActionEvent event) {
+		applyChanges();
+	}
+
+	@FXML
+	void gammaSliderShifted(KeyEvent event) {
+		updateGammaValue(sldGammaSlider.getValue());
+	}
+
+	@FXML
+	void gammaSliderUpdated(MouseEvent event) {
+		updateGammaValue(sldGammaSlider.getValue());
+	}
+
+	@FXML
+	void gammaValueScrolled(ScrollEvent event) {
+		updateGammaValue(gammaValue + event.getDeltaY() * 0.0125);
+	}
+
+	@FXML
+	void gammaValueUpdated(ActionEvent event) {
+		updateGammaValue(Double.valueOf(txtGammaValue.getText()));
+	}
+
+	/**
+	 * Sets the parent controller of this controller in order to integrate it
+	 * into the program.
+	 * 
+	 * @param parentController
+	 *            The origin controller
+	 */
+	public void setParentController(MainViewController parentController) {
+		this.parentController = parentController;
+	}
+
+	/**
+	 * Saves the new image when the user is happy with the changes they have
+	 * made.
+	 */
+	private void applyChanges() {
+		parentController.setImage(processedImage);
+		uneditedImage = processedImage;
+		updateGammaValue(gammaValue);
+	}
+
+	/**
+	 * Refresh the image being displayed, and show the image if the user has
+	 * selected to view its changes
+	 */
+	private void updateImage() {
+		// Ignore if the image is unchanged
+		if (uneditedImage != null) {
+			// If the user wants to show changes as they're being made
+			if (chkShowChanges.isSelected()) {
+				parentController.setImage(processedImage);
+			} else {
+				parentController.setImage(uneditedImage);
+			}
+		}
+	}
+
+	/**
+	 * Changes the value of gamma used in the correction calculations
+	 * 
+	 * @param gammaValue
+	 *            The new gamma value
+	 */
+	private void updateGammaValue(double gammaValue) {
+		if (gammaValue < 0) {
+			// Ensure gamma is never negative to avoid div0
+			gammaValue = 0;
+		} else {
+			// Round the number to however many decimal places
+			this.gammaValue = Math.floor(gammaValue * (10 * NUMBER_PRECISION)) / (10 * NUMBER_PRECISION);
+		}
+
+		// Update the UI elements with the new data
+		txtGammaValue.setText(String.valueOf(gammaValue));
+		sldGammaSlider.setValue(gammaValue);
+
+		// Only process the image after the initial UI load
+		if (parentController != null) {
+			// Then only process the image if one is present
+			if (parentController.getImage() != null) {
+				if (uneditedImage == null) {
+					// Get the unedited image for the first time
+					uneditedImage = parentController.getImage();
+				}
+				
+				processedImage = gammaCorrection(uneditedImage, gammaValue);
+				updateImage();
+			}
+		}
+	}
+
+	/**
+	 * Apply gamma correction to an image
+	 * 
+	 * @param sourceImage
+	 *            The original, uncorrected image
+	 * @param gammaValue
+	 *            The value of gamma used in the calculation
+	 * @return The corrected image
+	 */
+	private Image gammaCorrection(Image sourceImage, double gammaValue) {
 		// Find the dimensions of the source image
 		int width = (int) sourceImage.getWidth();
 		int height = (int) sourceImage.getHeight();
-		
+
 		// Create a new image
 		WritableImage newImage = new WritableImage(width, height);
 		// Get an interface to write to that image memory
@@ -130,7 +193,7 @@ public class MenuGammaController {
 			for (int x = 0; x < width; x++) {
 				// For each pixel, get the colour
 				Color color = reader.getColor(x, y);
-				
+
 				color = Color.color(gammaLookup[(int) (color.getRed() * 255)],
 						gammaLookup[(int) (color.getGreen() * 255)], gammaLookup[(int) (color.getBlue() * 255)]);
 
@@ -138,7 +201,6 @@ public class MenuGammaController {
 				writer.setColor(x, y, color);
 			}
 		}
-		System.out.println("I have corrected the gamma.");
 		return newImage;
 	}
 }

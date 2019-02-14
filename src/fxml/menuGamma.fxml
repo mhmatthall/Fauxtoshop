@@ -21,7 +21,7 @@
       </Label>
       <Slider fx:id="sldGammaSlider" blockIncrement="0.5" layoutX="14.0" layoutY="159.0" majorTickUnit="2.5" max="10.0" minWidth="178.0" minorTickCount="4" onKeyPressed="#gammaSliderShifted" onMouseReleased="#gammaSliderUpdated" prefHeight="14.0" prefWidth="178.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
       <Separator layoutX="3.0" layoutY="106.0" prefWidth="200.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="3.0" />
-      <Button fx:id="btnApply" layoutX="144.0" layoutY="711.0" mnemonicParsing="false" onAction="#applyChanges" text="Apply" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="14.800000000000011" />
+      <Button fx:id="btnApply" layoutX="144.0" layoutY="711.0" mnemonicParsing="false" onAction="#applyButtonClicked" text="Apply" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="14.800000000000011" />
       <CheckBox fx:id="chkShowChanges" layoutX="16.0" layoutY="691.0" mnemonicParsing="false" onAction="#showChangesBoxChanged" text="Show changes" AnchorPane.bottomAnchor="43.0" AnchorPane.leftAnchor="16.0" />
    </children>
 </AnchorPane>

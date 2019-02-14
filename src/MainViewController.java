@@ -98,6 +98,14 @@ public class MainViewController {
 		this.stage = stage;
 	}
 
+	public Image getImage() {
+		return imgImageViewer.getImage();
+	}
+	
+	public void setImage(Image newImage) {
+		imgImageViewer.setImage(newImage);
+	}
+	
 	// FXML Constructor
 	@FXML
 	public void initialize() {
@@ -122,15 +130,13 @@ public class MainViewController {
 		picker.getExtensionFilters().add(filter);
 
 		// Open the dialog
+		System.out.println("Opening the dialog");
 		File chosenImage = picker.showOpenDialog(stage);
 
 		if (chosenImage != null) {
 			// If the user actually selects an image, then get it
 			Image img = new Image(new FileInputStream(chosenImage));
 			imgImageViewer.setImage(img);
-			
-			// Load it into the image holding class
-			ImageConfig.setImage(img);
 
 			// Update the window title
 			stage.setTitle("Photoshop - '" + chosenImage.getName() + "'");
@@ -186,7 +192,8 @@ public class MainViewController {
 	/**
 	 * Loads a new tool menu panel form into the tool menu region
 	 * 
-	 * @param fileLocation The location of the tool's corresponding FXML file
+	 * @param fileLocation
+	 *            The location of the tool's corresponding FXML file
 	 */
 	private void changeTool(String fileLocation) {
 		if (!pneMainSplit.isDisable()) {
@@ -194,7 +201,9 @@ public class MainViewController {
 			try {
 				// Load the new tool onto the blank pane
 				FXMLLoader loader = new FXMLLoader(getClass().getResource(fileLocation));				
-				newPane = loader.load();
+				newPane = loader.load();	// It's not that it can't load the file, it's that it can't find the parent yet
+				MenuGammaController controller = loader.getController();
+				controller.setParentController(this);
 
 				// Add the nodes to the new pane
 				pneToolPane.getChildren().add(newPane);
