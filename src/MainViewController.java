@@ -97,18 +97,13 @@ public class MainViewController {
 	public void setStage(Stage stage) {
 		this.stage = stage;
 	}
-	
-	public Image getImage() {
-		return imgImageViewer.getImage();
-	}
-	
-	public void setImage(Image newImage) {
-		imgImageViewer.setImage(newImage);
-	}
 
 	// FXML Constructor
 	@FXML
 	public void initialize() {
+		// Open the gamma correction menu as the default
+		btnGammaClicked(null);
+		
 		// Disable the controls until the user loads a file
 		pneMainSplit.disableProperty().set(true);
 	}
@@ -129,16 +124,21 @@ public class MainViewController {
 		// Open the dialog
 		File chosenImage = picker.showOpenDialog(stage);
 
-		if (!chosenImage.equals(null)) {
-			// If the user selects an image
+		if (chosenImage != null) {
+			// If the user actually selects an image, then get it
 			Image img = new Image(new FileInputStream(chosenImage));
-			imgImageViewer.setImage(img); // Load the image onto the main image editor
+			imgImageViewer.setImage(img);
+			
+			// Load it into the image holding class
+			ImageConfig.setImage(img);
 
+			// Update the window title
 			stage.setTitle("Photoshop - '" + chosenImage.getName() + "'");
 			
 			// Re-enable the UI
 			pneMainSplit.disableProperty().set(false);
-			btnGammaClicked(null);
+			
+			
 		}
 	}
 
@@ -159,7 +159,6 @@ public class MainViewController {
 		/*
 		 * TODO create new images for the buttons: +inactive +active +hovered
 		 */
-
 	}
 
 	@FXML
