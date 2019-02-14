@@ -130,7 +130,6 @@ public class MainViewController {
 		picker.getExtensionFilters().add(filter);
 
 		// Open the dialog
-		System.out.println("Opening the dialog");
 		File chosenImage = picker.showOpenDialog(stage);
 
 		if (chosenImage != null) {
