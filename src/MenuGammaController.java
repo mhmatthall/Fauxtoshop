@@ -1,18 +1,14 @@
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 
 /**
  * The gamma correction module for the CS-255 Photoshop coursework.
@@ -20,29 +16,13 @@ import javafx.scene.text.Font;
  * @author Matt Hall (961500)
  */
 public class MenuGammaController extends ToolController {
-	/**
-	 * The number of decimal places that values will be rounded to.
-	 */
-	private final int NUMBER_PRECISION = 2;
 	private double gammaValue = 1.0;
 
 	@FXML
-	private AnchorPane pneGammaToolPane;
+	private TextField txtGamma;
 
 	@FXML
-	private TextField txtGammaValue;
-
-	@FXML
-	private Label lblToolDescription;
-
-	@FXML
-	private Label lblToolName;
-
-	@FXML
-	private Font x1;
-
-	@FXML
-	private Slider sldGammaSlider;
+	private Slider sldGamma;
 
 	@FXML
 	private void initialize() {
@@ -50,30 +30,24 @@ public class MenuGammaController extends ToolController {
 	}
 
 	@FXML
-	void gammaSliderShifted(KeyEvent event) {
-		updateGammaValue(sldGammaSlider.getValue());
-	}
-
-	@FXML
 	void gammaSliderUpdated(MouseEvent event) {
-		updateGammaValue(sldGammaSlider.getValue());
+		updateGammaValue(sldGamma.getValue());
 	}
 
 	@FXML
-	void gammaValueScrolled(ScrollEvent event) {
+	void gammaTextScrolled(ScrollEvent event) {
 		updateGammaValue(gammaValue + event.getDeltaY() * 0.0125);
 	}
 
 	@FXML
-	void gammaValueUpdated(ActionEvent event) {
-		updateGammaValue(Double.valueOf(txtGammaValue.getText()));
+	void gammaTextUpdated(ActionEvent event) {
+		updateGammaValue(Double.valueOf(txtGamma.getText()));
 	}
 
 	/**
 	 * Changes the value of gamma used in the correction calculations
 	 * 
-	 * @param gammaValue
-	 *            The new gamma value
+	 * @param gammaValue The new gamma value
 	 */
 	private void updateGammaValue(double gammaValue) {
 		if (gammaValue < 0) {
@@ -85,18 +59,13 @@ public class MenuGammaController extends ToolController {
 		}
 
 		// Update the UI elements with the new data
-		txtGammaValue.setText(String.valueOf(gammaValue));
-		sldGammaSlider.setValue(gammaValue);
+		txtGamma.setText(String.valueOf(gammaValue));
+		sldGamma.setValue(gammaValue);
 
 		// Only process the image after the initial UI load
 		if (parentController != null) {
 			// Then only process the image if one is present
 			if (parentController.getImage() != null) {
-				if (uneditedImage == null) {
-					// Get the unedited image for the first time
-					uneditedImage = parentController.getImage();
-				}
-
 				processedImage = gammaCorrection(uneditedImage, gammaValue);
 				updateImage();
 			}
@@ -106,10 +75,8 @@ public class MenuGammaController extends ToolController {
 	/**
 	 * Apply gamma correction to an image
 	 * 
-	 * @param sourceImage
-	 *            The original, uncorrected image
-	 * @param gammaValue
-	 *            The value of gamma used in the calculation
+	 * @param sourceImage The original, uncorrected image
+	 * @param gammaValue  The value of gamma used in the calculation
 	 * @return The corrected image
 	 */
 	private Image gammaCorrection(Image sourceImage, double gammaValue) {
