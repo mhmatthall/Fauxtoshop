@@ -13,18 +13,22 @@ import javafx.scene.image.Image;
  */
 public class ToolController {
 	/**
+	 * The number of decimal places that values will be rounded to.
+	 */
+	protected final int NUMBER_PRECISION = 2;
+	/**
 	 * The parent controller from which this controller is created
 	 */
 	protected MainViewController parentController;
 	/**
-	 * The source image stored for when the user is hiding changes
+	 * The source image stored to restore image to pre-processed state
 	 */
 	protected Image uneditedImage;
 	/**
 	 * The image with effects applied
 	 */
 	protected Image processedImage;
-
+	
 	@FXML
 	protected Button btnApply;
 
@@ -44,16 +48,24 @@ public class ToolController {
 	/**
 	 * Sets the parent controller of this controller.
 	 * 
-	 * @param parentController
-	 *            The origin controller
+	 * @param parentController The origin controller
 	 */
 	protected void setParentController(MainViewController parentController) {
 		this.parentController = parentController;
+		initialiseImages();
 	}
 
 	/**
-	 * Saves the new image when the user is happy with the changes they have
-	 * made.
+	 * Load the images once the parent controller is established
+	 */
+	private void initialiseImages() {
+		Image img = parentController.getImage();
+		uneditedImage = img;
+		processedImage = img;
+	}
+	
+	/**
+	 * Saves the new image when the user is happy with the changes they have made.
 	 */
 	protected void applyChanges() {
 		parentController.setImage(processedImage);
@@ -74,5 +86,12 @@ public class ToolController {
 				parentController.setImage(uneditedImage);
 			}
 		}
+	}
+
+	/**
+	 * Resets the image to the unedited version
+	 */
+	public void clearImage() {
+		parentController.setImage(uneditedImage);
 	}
 }
