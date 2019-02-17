@@ -9,19 +9,19 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="pneGammaToolPane" prefHeight="751.0" prefWidth="206.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MenuGammaController">
+<AnchorPane prefHeight="751.0" prefWidth="206.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MenuGammaController">
    <children>
-      <Label layoutX="14.0" layoutY="124.0" text="Value:" />
-      <TextField fx:id="txtGammaValue" layoutX="51.0" layoutY="120.0" onAction="#gammaValueUpdated" onScroll="#gammaValueScrolled" prefHeight="25.0" prefWidth="53.0" />
-      <Label fx:id="lblToolDescription" alignment="TOP_LEFT" layoutX="14.0" layoutY="41.0" prefHeight="53.0" prefWidth="178.0" text="Allows you to adjust the luminance of the image to better suit your monitor" wrapText="true" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
-      <Label fx:id="lblToolName" layoutX="14.0" layoutY="14.0" style="&#10;" text="Gamma Correction" textFill="#304ffe" wrapText="false">
+      <Label layoutX="14.0" layoutY="14.0" style="&#10;" text="Gamma Correction" textFill="#304ffe" wrapText="false">
          <font>
-            <Font size="18.0" fx:id="x1" />
+            <Font size="18.0" fx:id="fontTitle" />
          </font>
       </Label>
-      <Slider fx:id="sldGammaSlider" blockIncrement="0.5" layoutX="14.0" layoutY="159.0" majorTickUnit="2.5" max="10.0" minWidth="178.0" minorTickCount="4" onKeyPressed="#gammaSliderShifted" onMouseReleased="#gammaSliderUpdated" prefHeight="14.0" prefWidth="178.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
+      <Label alignment="TOP_LEFT" layoutX="14.0" layoutY="41.0" prefHeight="53.0" prefWidth="178.0" text="Allows you to adjust the luminance of the image to better suit your monitor" wrapText="true" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
       <Separator layoutX="3.0" layoutY="106.0" prefWidth="200.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="3.0" />
-      <Button fx:id="btnApply" layoutX="144.0" layoutY="711.0" mnemonicParsing="false" onAction="#applyButtonClicked" text="Apply" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="14.800000000000011" />
+      <Label layoutX="14.0" layoutY="124.0" text="Value:" />
+      <TextField fx:id="txtGamma" layoutX="51.0" layoutY="120.0" onAction="#gammaTextUpdated" onScroll="#gammaTextScrolled" prefHeight="25.0" prefWidth="53.0" />
+      <Slider fx:id="sldGamma" blockIncrement="0.5" layoutX="14.0" layoutY="159.0" majorTickUnit="2.5" max="10.0" minWidth="178.0" minorTickCount="4" onKeyPressed="#gammaSliderUpdated" onMouseReleased="#gammaSliderUpdated" prefHeight="14.0" prefWidth="178.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
       <CheckBox fx:id="chkShowChanges" layoutX="16.0" layoutY="691.0" mnemonicParsing="false" onAction="#showChangesBoxChanged" text="Show changes" AnchorPane.bottomAnchor="43.0" AnchorPane.leftAnchor="16.0" />
+      <Button fx:id="btnApply" layoutX="144.0" layoutY="711.0" mnemonicParsing="false" onAction="#applyButtonClicked" text="Apply" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="14.800000000000011" />
    </children>
 </AnchorPane>
