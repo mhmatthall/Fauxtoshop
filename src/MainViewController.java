@@ -64,7 +64,7 @@ public class MainViewController {
 
 	@FXML
 	private AnchorPane pneToolPane;
-	
+
 	@FXML
 	private ImageView btnEffects;
 
@@ -94,10 +94,10 @@ public class MainViewController {
 
 	@FXML
 	private CheckBox chkHistogramShowRed;
-	
+
 	@FXML
 	private Label txtLeftStatus;
-	
+
 	// FXML Constructor
 	@FXML
 	public void initialize() {
@@ -123,11 +123,16 @@ public class MainViewController {
 
 	@FXML
 	void fileOpenClicked(ActionEvent event) {
-		openImageFile();
+		openFile();
 	}
 
 	@FXML
 	void fileCloseClicked(ActionEvent event) {
+		closeFile();
+	}
+
+	@FXML
+	void fileQuitClicked(ActionEvent event) {
 		closeProgram();
 	}
 
@@ -180,7 +185,7 @@ public class MainViewController {
 	void btnContrastEndHover(MouseEvent event) {
 		hoverEffect(Tool.CONTRAST_STRETCHING, event);
 	}
-	
+
 	@FXML
 	void btnBlurStartHover(MouseEvent event) {
 		hoverEffect(Tool.BLUR, event);
@@ -218,7 +223,7 @@ public class MainViewController {
 				for (ButtonStatus b : ButtonStatus.values()) {
 					// For each of the different button statuses
 					String path = "ico/ico" + t.getInternalToolName() + b.getFilename() + ".png";
-					
+
 					icons[t.getIndex()][b.getValue()] = new Image(getClass().getResource(path).toString());
 				}
 			}
@@ -233,7 +238,27 @@ public class MainViewController {
 		stage.close();
 	}
 
-	private void openImageFile() {
+	private void closeFile() {
+		// Reset the tool panels
+		resetUI();
+
+		// Clear the tool's stored image cache
+		if (currentToolController != null) {
+			// Only if the user has selected a tool
+			currentToolController.clearImages(true);
+		}
+
+		// Remove the displayed image
+		imgImageViewer.setImage(null);
+
+		// Update the window title
+		stage.setTitle("Photoshop");
+
+		// Disable the UI
+		pneMainSplit.disableProperty().set(true);
+	}
+
+	private void openFile() {
 		FileChooser picker = new FileChooser();
 
 		picker.setTitle("Open Image File");
@@ -248,6 +273,10 @@ public class MainViewController {
 		File chosenImage = picker.showOpenDialog(stage);
 
 		if (chosenImage != null) {
+			if (imgImageViewer != null) {
+				// If another file is loaded, close that one first
+				closeFile();
+			}
 			try {
 				// If the user actually selects an image, then get it
 				Image img = new Image(new FileInputStream(chosenImage));
@@ -270,7 +299,7 @@ public class MainViewController {
 	private void hoverEffect(Tool toolType, MouseEvent event) {
 		// Obtain the button being actioned upon
 		ImageView img = (ImageView) event.getTarget();
-		
+
 		if (event.getEventType().equals(MouseEvent.MOUSE_ENTERED)) {
 			// If the mouse is starting hovering over the button
 			if (!img.getImage().equals(icons[toolType.getIndex()][ButtonStatus.SELECTED.getValue()])) {
@@ -287,7 +316,7 @@ public class MainViewController {
 			}
 		}
 	}
-	
+
 	/**
 	 * Loads a new tool menu panel form into the tool menu region
 	 * 
@@ -296,23 +325,22 @@ public class MainViewController {
 	private void changeTool(Tool toolType, MouseEvent event) {
 		if (!pneMainSplit.isDisable()) {
 			resetUI();
-			
+
 			// Obtain the button being actioned upon
 			ImageView img = (ImageView) event.getTarget();
 
 			// Retrieve and set the correct 'tool selected' image from the image cache
 			img.setImage(icons[toolType.getIndex()][ButtonStatus.SELECTED.getValue()]);
 
-			// Remove all of the nodes from the previous tool
-			pneToolPane.getChildren().clear();
-
 			Pane newPane; // Create a blank pane
 			try {
 				// Load the new tool onto the blank pane
-				FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/menu" + toolType.getInternalToolName() + ".fxml"));
+				FXMLLoader loader = new FXMLLoader(
+						getClass().getResource("fxml/menu" + toolType.getInternalToolName() + ".fxml"));
 				newPane = loader.load();
 				currentToolController = loader.getController();
 				currentToolController.setParentController(this);
+				currentToolController.initialiseImages();
 
 				// Add the nodes to the new pane
 				pneToolPane.getChildren().add(newPane);
@@ -324,7 +352,7 @@ public class MainViewController {
 			}
 		}
 	}
-	
+
 	private void resetUI() {
 		// Reset the tool icon images
 		for (Tool t : Tool.values()) {
@@ -332,10 +360,8 @@ public class MainViewController {
 			String path = "ico/ico" + t.getInternalToolName() + "Deselected.png";
 			((ImageView) currentTool).setImage(new Image(getClass().getResource(path).toString()));
 		}
-		
-		// Reset the displayed image to remove any unsaved changes
-		if (currentToolController != null) {
-			currentToolController.clearImage();
-		}
+
+		// Remove all of the nodes of the current tool
+		pneToolPane.getChildren().clear();
 	}
 }

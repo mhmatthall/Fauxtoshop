@@ -52,13 +52,12 @@ public class ToolController {
 	 */
 	protected void setParentController(MainViewController parentController) {
 		this.parentController = parentController;
-		initialiseImages();
 	}
 
 	/**
 	 * Load the images once the parent controller is established
 	 */
-	private void initialiseImages() {
+	public void initialiseImages() {
 		Image img = parentController.getImage();
 		uneditedImage = img;
 		processedImage = img;
@@ -91,7 +90,11 @@ public class ToolController {
 	/**
 	 * Resets the image to the unedited version
 	 */
-	public void clearImage() {
-		parentController.setImage(uneditedImage);
+	public void clearImages(boolean isClosingImage) {
+		if (!isClosingImage) {
+			parentController.setImage(uneditedImage);
+		}
+		uneditedImage = null;
+		processedImage = null;
 	}
 }

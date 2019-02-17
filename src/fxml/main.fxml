@@ -28,11 +28,11 @@
             <MenuItem fx:id="menuFileNew" mnemonicParsing="false" text="New" />
             <MenuItem fx:id="menuFileOpen" mnemonicParsing="false" onAction="#fileOpenClicked" text="Open…" />
             <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem fx:id="menuFileClose" mnemonicParsing="false" text="Close" />
+            <MenuItem fx:id="menuFileClose" mnemonicParsing="false" onAction="#fileCloseClicked" text="Close" />
             <MenuItem fx:id="menuFileSave" mnemonicParsing="false" text="Save" />
             <MenuItem fx:id="menuFileSaveAs" mnemonicParsing="false" text="Save As…" />
             <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem fx:id="menuFileQuit" mnemonicParsing="false" onAction="#fileCloseClicked" text="Quit" />
+            <MenuItem fx:id="menuFileQuit" mnemonicParsing="false" onAction="#fileQuitClicked" text="Quit" />
           </items>
         </Menu>
         <Menu fx:id="menuAbout" mnemonicParsing="false" text="About" />
@@ -77,7 +77,7 @@
           <children>
                   <Label layoutX="14.0" layoutY="14.0" style="&#10;" text="Histogram" textFill="#304ffe" wrapText="false">
                      <font>
-                        <Font size="18.0" fx:id="fontTitle" />
+                        <Font fx:id="fontTitle" size="18.0" />
                      </font>
                   </Label>
                   <AreaChart fx:id="chtHistogram" alternativeRowFillVisible="false" createSymbols="false" horizontalGridLinesVisible="false" horizontalZeroLineVisible="false" layoutX="6.0" layoutY="54.0" legendVisible="false" maxWidth="300.0" minWidth="300.0" prefWidth="300.0" verticalGridLinesVisible="false" verticalZeroLineVisible="false">
@@ -90,7 +90,7 @@
                   </AreaChart>
                   <Label layoutX="14.0" layoutY="444.0" style="&#10;" text="Channels" textFill="#304ffe" wrapText="false">
                      <font>
-                        <Font size="14.0" fx:id="fontSubtitle" />
+                        <Font fx:id="fontSubtitle" size="14.0" />
                      </font>
                   </Label>
                   <CheckBox fx:id="chkHistogramShowRGB" layoutX="20.0" layoutY="469.0" mnemonicParsing="false" onAction="#histogramShowRGBBoxChanged" text="RGB" />
@@ -105,7 +105,7 @@
       <children>
         <Label fx:id="txtLeftStatus" maxHeight="1.7976931348623157E308" maxWidth="-1.0" text="Open a file to get started" HBox.hgrow="ALWAYS">
           <font>
-            <Font size="11.0" fx:id="fontBody" />
+            <Font fx:id="fontBody" size="11.0" />
           </font>
         </Label>
       </children>
