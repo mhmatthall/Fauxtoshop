@@ -22,14 +22,14 @@
       <Label alignment="TOP_LEFT" layoutX="14.0" layoutY="41.0" prefHeight="53.0" prefWidth="178.0" text="Allows you to alter the contrast of an image by changing the range of the pixel intensity" wrapText="true" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
       <Separator layoutX="3.0" layoutY="106.0" prefWidth="200.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="3.0" />
       <Rectangle fx:id="stretchArea" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="200.0" layoutX="3.0" layoutY="110.0" stroke="#304ffe" strokeType="INSIDE" width="200.0" />
-      <Circle fx:id="node1" fill="#304ffe" layoutX="3.0" layoutY="110.0" onMouseClicked="#node1Clicked" onMouseDragged="#node1Dragged" onMousePressed="#node1StartDrag" onMouseReleased="#node1EndDrag" radius="3.0" stroke="TRANSPARENT" strokeType="INSIDE">
+      <Circle fx:id="node1" fill="#304ffe" layoutX="3.0" layoutY="110.0" onMouseDragged="#node1Dragged" onMousePressed="#node1StartDrag" onMouseReleased="#node1EndDrag" radius="3.0" stroke="TRANSPARENT" strokeType="INSIDE">
          <cursor>
-            <Cursor fx:constant="HAND" />
+            <Cursor fx:constant="OPEN_HAND" />
          </cursor>
       </Circle>
-      <Circle fx:id="node2" fill="#304ffe" layoutX="3.0" layoutY="110.0" onMouseClicked="#node2Clicked" onMouseDragged="#node2Dragged" onMousePressed="#node2StartDrag" radius="3.0" stroke="TRANSPARENT" strokeType="INSIDE">
+      <Circle fx:id="node2" fill="#304ffe" layoutX="3.0" layoutY="110.0" onMouseDragged="#node2Dragged" onMousePressed="#node2StartDrag" onMouseReleased="#node2EndDrag" radius="3.0" stroke="TRANSPARENT" strokeType="INSIDE">
          <cursor>
-            <Cursor fx:constant="HAND" />
+            <Cursor fx:constant="OPEN_HAND" />
          </cursor>
       </Circle>
       <Label layoutX="14.0" layoutY="317.0" style="&#10;" text="Node 1" textFill="#304ffe" wrapText="false">
