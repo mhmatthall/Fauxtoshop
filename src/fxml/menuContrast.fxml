@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.Group?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
@@ -20,40 +21,44 @@
          </font>
       </Label>
       <Label alignment="TOP_LEFT" layoutX="14.0" layoutY="41.0" prefHeight="53.0" prefWidth="178.0" text="Allows you to alter the contrast of an image by changing the range of the pixel intensity" wrapText="true" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
-      <Separator layoutX="3.0" layoutY="106.0" prefWidth="200.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="3.0" />
-      <Rectangle fx:id="stretchArea" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="200.0" layoutX="3.0" layoutY="110.0" stroke="#304ffe" strokeType="INSIDE" width="200.0" />
-      <Circle fx:id="node1" fill="#304ffe" layoutX="3.0" layoutY="110.0" onMouseDragged="#node1Dragged" onMousePressed="#node1StartDrag" onMouseReleased="#node1EndDrag" radius="3.0" stroke="TRANSPARENT" strokeType="INSIDE">
-         <cursor>
-            <Cursor fx:constant="OPEN_HAND" />
-         </cursor>
-      </Circle>
-      <Circle fx:id="node2" fill="#304ffe" layoutX="3.0" layoutY="110.0" onMouseDragged="#node2Dragged" onMousePressed="#node2StartDrag" onMouseReleased="#node2EndDrag" radius="3.0" stroke="TRANSPARENT" strokeType="INSIDE">
-         <cursor>
-            <Cursor fx:constant="OPEN_HAND" />
-         </cursor>
-      </Circle>
-      <Label layoutX="14.0" layoutY="317.0" style="&#10;" text="Node 1" textFill="#304ffe" wrapText="false">
+      <Separator layoutX="3.0" layoutY="93.0" prefWidth="200.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="3.0" />
+      <Rectangle fx:id="stretchArea" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="255.0" layoutX="3.0" layoutY="97.0" stroke="#304ffe" strokeType="INSIDE" width="255.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="3.0" />
+      <Group fx:id="grpNodes" layoutX="3.0" layoutY="97.0">
+         <children>
+            <Circle fx:id="node1" fill="#304ffe" onMouseDragged="#node1Dragged" onMousePressed="#node1StartDrag" onMouseReleased="#node1EndDrag" radius="3.0" stroke="TRANSPARENT" strokeType="INSIDE">
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor>
+            </Circle>
+            <Circle fx:id="node2" fill="#304ffe" onMouseDragged="#node2Dragged" onMousePressed="#node2StartDrag" onMouseReleased="#node2EndDrag" radius="3.0" stroke="TRANSPARENT" strokeType="INSIDE">
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor>
+            </Circle>
+         </children>
+      </Group>
+      <Label layoutX="15.0" layoutY="367.0" style="&#10;" text="Node 1" textFill="#304ffe" wrapText="false">
          <font>
             <Font fx:id="fontSubtitle" size="14.0" />
          </font>
       </Label>
-      <Label alignment="CENTER_RIGHT" layoutX="31.0" layoutY="343.0" text="In:" textAlignment="RIGHT" />
-      <TextField fx:id="txtNode1In" layoutX="50.0" layoutY="339.0" onAction="#node1InTextChanged" onScroll="#node1InTextScrolled" prefHeight="25.0" prefWidth="47.0" />
-      <Slider fx:id="sldNode1In" blockIncrement="1.0" layoutX="106.0" layoutY="345.0" majorTickUnit="15.0" max="255.0" minWidth="76.0" minorTickCount="1" onKeyPressed="#node1InSliderUpdated" onMouseReleased="#node1InSliderUpdated" prefHeight="14.0" prefWidth="84.0" snapToTicks="true" AnchorPane.leftAnchor="106.0" AnchorPane.rightAnchor="16.0" />
-      <Label alignment="CENTER_RIGHT" layoutX="22.0" layoutY="373.0" text="Out:" textAlignment="RIGHT" />
-      <TextField fx:id="txtNode1Out" layoutX="50.0" layoutY="369.0" onAction="#node1OutTextChanged" onScroll="#node1OutTextScrolled" prefHeight="25.0" prefWidth="47.0" />
-      <Slider fx:id="sldNode1Out" blockIncrement="1.0" layoutX="106.0" layoutY="375.0" majorTickUnit="15.0" max="255.0" minWidth="76.0" minorTickCount="1" onKeyPressed="#node1OutSliderUpdated" onMouseReleased="#node1OutSliderUpdated" prefHeight="14.0" prefWidth="84.0" snapToTicks="true" AnchorPane.leftAnchor="106.0" AnchorPane.rightAnchor="16.0" />
-      <Label layoutX="14.0" layoutY="408.0" style="&#10;" text="Node 2" textFill="#304ffe" wrapText="false">
+      <Label alignment="CENTER_RIGHT" layoutX="32.0" layoutY="393.0" text="In:" textAlignment="RIGHT" />
+      <TextField fx:id="txtNode1In" layoutX="51.0" layoutY="389.0" onAction="#node1InTextChanged" onScroll="#node1InTextScrolled" prefHeight="25.0" prefWidth="47.0" />
+      <Slider fx:id="sldNode1In" blockIncrement="1.0" layoutX="107.0" layoutY="395.0" majorTickUnit="15.0" max="255.0" minWidth="76.0" minorTickCount="1" onKeyPressed="#node1InSliderUpdated" onMouseReleased="#node1InSliderUpdated" prefHeight="14.0" prefWidth="84.0" snapToTicks="true" AnchorPane.leftAnchor="107.0" AnchorPane.rightAnchor="15.0" />
+      <Label alignment="CENTER_RIGHT" layoutX="23.0" layoutY="423.0" text="Out:" textAlignment="RIGHT" />
+      <TextField fx:id="txtNode1Out" layoutX="51.0" layoutY="419.0" onAction="#node1OutTextChanged" onScroll="#node1OutTextScrolled" prefHeight="25.0" prefWidth="47.0" />
+      <Slider fx:id="sldNode1Out" blockIncrement="1.0" layoutX="107.0" layoutY="425.0" majorTickUnit="15.0" max="255.0" minWidth="76.0" minorTickCount="1" onKeyPressed="#node1OutSliderUpdated" onMouseReleased="#node1OutSliderUpdated" prefHeight="14.0" prefWidth="84.0" snapToTicks="true" AnchorPane.leftAnchor="107.0" AnchorPane.rightAnchor="15.0" />
+      <Label layoutX="15.0" layoutY="458.0" style="&#10;" text="Node 2" textFill="#304ffe" wrapText="false">
          <font>
             <Font fx:id="fontSubtitle" size="14.0" />
          </font>
       </Label>
-      <Label alignment="CENTER_RIGHT" layoutX="32.0" layoutY="434.0" text="In:" textAlignment="RIGHT" />
-      <TextField fx:id="txtNode2In" layoutX="51.0" layoutY="430.0" onAction="#node2InTextChanged" onScroll="#node2InTextScrolled" prefHeight="25.0" prefWidth="47.0" />
-      <Slider fx:id="sldNode2In" blockIncrement="1.0" layoutX="107.0" layoutY="436.0" majorTickUnit="15.0" max="255.0" minWidth="76.0" minorTickCount="1" onKeyPressed="#node2InSliderUpdated" onMouseReleased="#node2InSliderUpdated" prefHeight="14.0" prefWidth="84.0" snapToTicks="true" AnchorPane.leftAnchor="106.0" AnchorPane.rightAnchor="16.0" />
-      <Label alignment="CENTER_RIGHT" layoutX="23.0" layoutY="464.0" text="Out:" textAlignment="RIGHT" />
-      <TextField fx:id="txtNode2Out" layoutX="51.0" layoutY="460.0" onAction="#node2OutTextChanged" onScroll="#node2OutTextScrolled" prefHeight="25.0" prefWidth="47.0" />
-      <Slider fx:id="sldNode2Out" blockIncrement="1.0" layoutX="107.0" layoutY="466.0" majorTickUnit="15.0" max="255.0" minWidth="76.0" minorTickCount="1" onKeyPressed="#node2OutSliderUpdated" onMouseReleased="#node2OutSliderUpdated" prefHeight="14.0" prefWidth="84.0" snapToTicks="true" AnchorPane.leftAnchor="106.0" AnchorPane.rightAnchor="16.0" />
+      <Label alignment="CENTER_RIGHT" layoutX="33.0" layoutY="484.0" text="In:" textAlignment="RIGHT" />
+      <TextField fx:id="txtNode2In" layoutX="52.0" layoutY="480.0" onAction="#node2InTextChanged" onScroll="#node2InTextScrolled" prefHeight="25.0" prefWidth="47.0" />
+      <Slider fx:id="sldNode2In" blockIncrement="1.0" layoutX="107.0" layoutY="486.0" majorTickUnit="15.0" max="255.0" minWidth="76.0" minorTickCount="1" onKeyPressed="#node2InSliderUpdated" onMouseReleased="#node2InSliderUpdated" prefHeight="14.0" prefWidth="84.0" snapToTicks="true" AnchorPane.leftAnchor="107.0" AnchorPane.rightAnchor="15.0" />
+      <Label alignment="CENTER_RIGHT" layoutX="24.0" layoutY="514.0" text="Out:" textAlignment="RIGHT" />
+      <TextField fx:id="txtNode2Out" layoutX="52.0" layoutY="510.0" onAction="#node2OutTextChanged" onScroll="#node2OutTextScrolled" prefHeight="25.0" prefWidth="47.0" />
+      <Slider fx:id="sldNode2Out" blockIncrement="1.0" layoutX="107.0" layoutY="516.0" majorTickUnit="15.0" max="255.0" minWidth="76.0" minorTickCount="1" onKeyPressed="#node2OutSliderUpdated" onMouseReleased="#node2OutSliderUpdated" prefHeight="14.0" prefWidth="84.0" snapToTicks="true" AnchorPane.leftAnchor="107.0" AnchorPane.rightAnchor="15.0" />
       <CheckBox fx:id="chkShowChanges" layoutX="16.0" layoutY="691.0" mnemonicParsing="false" onAction="#showChangesBoxChanged" text="Show changes" AnchorPane.bottomAnchor="43.0" AnchorPane.leftAnchor="16.0" />
       <Button fx:id="btnApply" layoutX="144.0" layoutY="711.0" mnemonicParsing="false" onAction="#applyButtonClicked" text="Apply" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="14.800000000000011" />
    </children>

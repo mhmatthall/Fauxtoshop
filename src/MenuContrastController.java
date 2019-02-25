@@ -1,8 +1,11 @@
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
+import java.awt.Point;
 import java.awt.geom.Point2D;
 import javafx.scene.Cursor;
+import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -11,6 +14,7 @@ import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -21,10 +25,13 @@ public class MenuContrastController extends ToolController {
 	
 	private Nonce willBuchanan = new Nonce();
 	
-	private Point2D.Double oldPos = new Point2D.Double();
-	private Point2D.Double offset = new Point2D.Double();
-	private Point2D.Double newPos = new Point2D.Double();
+	private Point oldPos = new Point();
+	private Point offset = new Point();
+	private Point newPos = new Point();
 	private double[][] nodePositions = new double[MAX_ALLOWED_NODES][2];
+	
+    @FXML
+    private Group grpNodes;
 	
     @FXML
     private Circle node1;
@@ -61,9 +68,15 @@ public class MenuContrastController extends ToolController {
 
 	@FXML
 	private void initialize() {
+		int i = 0;
+		for (Node n : grpNodes.getChildren()) {
+			n.setUserData(i);
+			i++;
+		}
+		
 		// Set the nodes to their default positions (bottom left, top right)
-		nodePositions[0][1] = 200;
-		nodePositions[1][0] = 200;
+		nodePositions[0][1] = 255;
+		nodePositions[1][0] = 255;
 		refresh();
 	}
     
@@ -84,32 +97,32 @@ public class MenuContrastController extends ToolController {
     
     @FXML
     void node1InSliderUpdated(MouseEvent event) {
-    	updatePosition(1, 0, sldNode1In.getValue());
+    	updatePosition(node1, 0, sldNode1In.getValue());
     }
 
     @FXML
     void node1InTextChanged(ActionEvent event) {
-    	updatePosition(1, 0, Double.valueOf(txtNode1In.getText()));
+    	updatePosition(node1, 0, Double.valueOf(txtNode1In.getText()));
     }
 
     @FXML
     void node1InTextScrolled(ScrollEvent event) {
-		updatePosition(1, 0, nodePositions[0][0] + event.getDeltaY());
+		updatePosition(node1, 0, nodePositions[0][0] + event.getDeltaY());
 	}
 
     @FXML
     void node1OutSliderUpdated(MouseEvent event) {
-    	updatePosition(1, 1, sldNode1Out.getValue());
+    	updatePosition(node1, 1, sldNode1Out.getValue());
     }
 
     @FXML
     void node1OutTextChanged(ActionEvent event) {
-    	updatePosition(1, 1, Double.valueOf(txtNode1Out.getText()));
+    	updatePosition(node1, 1, Double.valueOf(txtNode1Out.getText()));
     }
 
     @FXML
     void node1OutTextScrolled(ScrollEvent event) {
-    	updatePosition(1, 1, nodePositions[0][1] + event.getDeltaY());
+    	updatePosition(node1, 1, nodePositions[0][1] + event.getDeltaY());
     }
 
     @FXML
@@ -129,32 +142,32 @@ public class MenuContrastController extends ToolController {
 
     @FXML
     void node2InSliderUpdated(MouseEvent event) {
-    	updatePosition(2, 0, sldNode2In.getValue());
+    	updatePosition(node2, 0, sldNode2In.getValue());
     }
 
     @FXML
     void node2InTextChanged(ActionEvent event) {
-    	updatePosition(2, 0, Double.valueOf(txtNode2In.getText()));
+    	updatePosition(node2, 0, Double.valueOf(txtNode2In.getText()));
     }
 
     @FXML
     void node2InTextScrolled(ScrollEvent event) {
-    	updatePosition(2, 0, nodePositions[1][0] + event.getDeltaY());
+    	updatePosition(node2, 0, nodePositions[1][0] + event.getDeltaY());
     }
 
     @FXML
     void node2OutSliderUpdated(MouseEvent event) {
-    	updatePosition(2, 1, sldNode2Out.getValue());
+    	updatePosition(node2, 1, sldNode2Out.getValue());
     }
 
     @FXML
     void node2OutTextChanged(ActionEvent event) {
-    	updatePosition(2, 1, Double.valueOf(txtNode2Out.getText()));
+    	updatePosition(node2, 1, Double.valueOf(txtNode2Out.getText()));
     }
 
     @FXML
     void node2OutTextScrolled(ScrollEvent event) {
-    	updatePosition(2, 1, nodePositions[1][1] + event.getDeltaY());
+    	updatePosition(node2, 1, nodePositions[1][1] + event.getDeltaY());
     }
 
     private void startNodeDrag(Circle node, MouseEvent event) {
@@ -187,8 +200,8 @@ public class MenuContrastController extends ToolController {
 		}
 
 		// Set the circle's new location
-		node.setCenterX(newPos.getX());
-		node.setCenterY(newPos.getY());
+		updatePosition(node, 0, newPos.getX());
+		updatePosition(node, 1, newPos.getY());
 		
 		// Make sure we reset the old pos between each drag 
 		oldPos.setLocation(event.getSceneX(), event.getSceneY());
@@ -197,6 +210,8 @@ public class MenuContrastController extends ToolController {
     private void endNodeDrag(Circle node, MouseEvent event) {
     	// Change the cursor to indicate end of drag
     	node.setCursor(Cursor.OPEN_HAND);
+    	
+    	// TODO add status bar info changing
     }
 
 	private void refresh() {
@@ -221,20 +236,20 @@ public class MenuContrastController extends ToolController {
 		txtNode2Out.setText(String.valueOf(currentPos));
 		sldNode2Out.setValue(currentPos);
 		node2.setCenterY(currentPos);
+		
+		// TODO draw a line between the nodes and the origin/255,255
 	}
 	
-	private void updatePosition(int nodeNumber, int nodeDimension, double newPosition) {
-		if (newPosition < 0) {
-			// Value validation check
-			newPosition = 0;
-		} else {
-			// Round the number to however many decimal places
-			newPosition = Math.floor(newPosition * (10 * NUMBER_PRECISION)) / (10 * NUMBER_PRECISION);
+	private void updatePosition(Circle node, int nodeDimension, double newValue) {
+		int newPosition = 0;
+		if (newValue >= 0) {
+			// Truncate the number
+			newPosition = (int) Math.floor(newValue);
 		}
 		
 		// Filthy shortcut, but I want to keep this somewhat scalable, but don't want to
 		// get into a mess of EventListeners pls
-		nodePositions[nodeNumber - 1][nodeDimension] = newPosition;
+		nodePositions[(int) node.getUserData() - 1][nodeDimension] = newPosition;
 		
 		// Update the UI elements to reflect the change
 		refresh();
