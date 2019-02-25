@@ -19,7 +19,7 @@ import sun.security.krb5.internal.crypto.Nonce;
 public class MenuContrastController extends ToolController {
 	private final int MAX_ALLOWED_NODES = 2;
 	
-	private Nonce gayPakki = new Nonce();
+	private Nonce willBuchanan = new Nonce();
 	
 	private Point2D.Double oldPos = new Point2D.Double();
 	private Point2D.Double offset = new Point2D.Double();
