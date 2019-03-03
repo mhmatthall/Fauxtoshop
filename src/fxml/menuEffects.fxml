@@ -23,13 +23,20 @@
       </Label>
       <Label alignment="TOP_LEFT" layoutX="24.0" layoutY="120.0" prefHeight="20.0" prefWidth="158.0" text="Reverse the image's colours" wrapText="true" />
       <Button fx:id="btnInvert" layoutX="24.0" layoutY="142.0" mnemonicParsing="false" onAction="#invertButtonClicked" prefHeight="25.0" prefWidth="158.0" text="Invert" />
-      <Label layoutX="17.0" layoutY="193.0" style="&#10;" text="Equalise" textFill="#304ffe" wrapText="false">
+      <Label layoutX="17.0" layoutY="186.0" style="&#10;" text="Greyscale" textFill="#304ffe" wrapText="false">
          <font>
-            <Font fx:id="fontSubtitle1" size="14.0" />
+            <Font fx:id="fontSubtitle" size="14.0" />
          </font>
       </Label>
-      <Label alignment="TOP_LEFT" layoutX="24.0" layoutY="213.0" prefHeight="53.0" prefWidth="158.0" text="Performs a histogram equalisation on the image to enhance contrast" wrapText="true" />
-      <Button fx:id="btnEqualise" layoutX="24.0" layoutY="268.0" mnemonicParsing="false" onAction="#equaliseButtonClicked" prefHeight="25.0" prefWidth="158.0" text="Equalise" />
+      <Label alignment="TOP_LEFT" layoutX="24.0" layoutY="206.0" prefHeight="38.0" prefWidth="158.0" text="Make the image black and white only" wrapText="true" />
+      <Button fx:id="btnGreyscale" layoutX="24.0" layoutY="244.0" mnemonicParsing="false" onAction="#greyscaleButtonClicked" prefHeight="25.0" prefWidth="158.0" text="Greyscale" />
+      <Label layoutX="17.0" layoutY="288.0" style="&#10;" text="Equalise" textFill="#304ffe" wrapText="false">
+         <font>
+            <Font fx:id="fontSubtitle" size="14.0" />
+         </font>
+      </Label>
+      <Label alignment="TOP_LEFT" layoutX="24.0" layoutY="308.0" prefHeight="53.0" prefWidth="158.0" text="Performs a histogram equalisation on the image to enhance contrast" wrapText="true" />
+      <Button fx:id="btnEqualise" layoutX="24.0" layoutY="363.0" mnemonicParsing="false" onAction="#equaliseButtonClicked" prefHeight="25.0" prefWidth="158.0" text="Equalise" />
       <CheckBox fx:id="chkShowChanges" layoutX="16.0" layoutY="691.0" mnemonicParsing="false" onAction="#showChangesBoxChanged" text="Show changes" AnchorPane.bottomAnchor="43.0" AnchorPane.leftAnchor="16.0" />
       <Button fx:id="btnApply" layoutX="144.0" layoutY="711.0" mnemonicParsing="false" onAction="#applyButtonClicked" text="Apply" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="14.800000000000011" />
    </children>

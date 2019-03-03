@@ -32,9 +32,10 @@ public class MainViewController {
 	private Image[][] icons = new Image[Tool.values().length][ButtonStatus.values().length];
 	private ToolController currentToolController;
 	private Stage stage;
-	private int[][] distribution;
 	// shows RGB histo by default
 	private boolean[] showHistogramChannels = { false, false, false, true };
+	
+	public int[][] distribution;
 
 	@FXML
 	private MenuItem menuFileNew;
