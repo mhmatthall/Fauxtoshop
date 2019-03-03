@@ -2,7 +2,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
 import java.awt.Point;
-import java.awt.geom.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -14,21 +13,19 @@ import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
-import sun.security.krb5.internal.crypto.Nonce;
 
 public class MenuContrastController extends ToolController {
 	private final int MAX_ALLOWED_NODES = 2;
 	
-	private Nonce willBuchanan = new Nonce();
-	
 	private Point oldPos = new Point();
 	private Point offset = new Point();
 	private Point newPos = new Point();
-	private double[][] nodePositions = new double[MAX_ALLOWED_NODES][2];
+	private int[][] nodePositions = new int[MAX_ALLOWED_NODES][2];
+	
+	// TODO add boolean to prevent lag caused by processing during drag
 	
     @FXML
     private Group grpNodes;
@@ -68,16 +65,10 @@ public class MenuContrastController extends ToolController {
 
 	@FXML
 	private void initialize() {
-		int i = 0;
-		for (Node n : grpNodes.getChildren()) {
-			n.setUserData(i);
-			i++;
-		}
-		
 		// Set the nodes to their default positions (bottom left, top right)
-		nodePositions[0][1] = 255;
 		nodePositions[1][0] = 255;
-		refresh();
+		nodePositions[1][1] = 255;
+		refreshValues();
 	}
     
     @FXML
@@ -107,7 +98,7 @@ public class MenuContrastController extends ToolController {
 
     @FXML
     void node1InTextScrolled(ScrollEvent event) {
-		updatePosition(node1, 0, nodePositions[0][0] + event.getDeltaY());
+		updatePosition(node1, 0, nodePositions[0][0] + event.getDeltaY() * 0.125);
 	}
 
     @FXML
@@ -122,7 +113,7 @@ public class MenuContrastController extends ToolController {
 
     @FXML
     void node1OutTextScrolled(ScrollEvent event) {
-    	updatePosition(node1, 1, nodePositions[0][1] + event.getDeltaY());
+    	updatePosition(node1, 1, nodePositions[0][1] + event.getDeltaY() * 0.125);
     }
 
     @FXML
@@ -152,7 +143,7 @@ public class MenuContrastController extends ToolController {
 
     @FXML
     void node2InTextScrolled(ScrollEvent event) {
-    	updatePosition(node2, 0, nodePositions[1][0] + event.getDeltaY());
+    	updatePosition(node2, 0, nodePositions[1][0] + event.getDeltaY() * 0.125);
     }
 
     @FXML
@@ -167,7 +158,7 @@ public class MenuContrastController extends ToolController {
 
     @FXML
     void node2OutTextScrolled(ScrollEvent event) {
-    	updatePosition(node2, 1, nodePositions[1][1] + event.getDeltaY());
+    	updatePosition(node2, 1, nodePositions[1][1] + event.getDeltaY() * 0.125);
     }
 
     private void startNodeDrag(Circle node, MouseEvent event) {
@@ -198,10 +189,11 @@ public class MenuContrastController extends ToolController {
 		} else if (newPos.getY() < 0) {
 			newPos.setLocation(newPos.getX(), 0);
 		}
-
+		
+		
 		// Set the circle's new location
 		updatePosition(node, 0, newPos.getX());
-		updatePosition(node, 1, newPos.getY());
+		updatePosition(node, 1, (255 - newPos.getY()));
 		
 		// Make sure we reset the old pos between each drag 
 		oldPos.setLocation(event.getSceneX(), event.getSceneY());
@@ -214,8 +206,12 @@ public class MenuContrastController extends ToolController {
     	// TODO add status bar info changing
     }
 
-	private void refresh() {
-		double currentPos = 0;
+    private int getNodeNumber(Node node) {
+    	return Integer.valueOf(node.getId().substring(node.getId().length() - 1));
+    }
+    
+	private void refreshValues() {
+		int currentPos = 0;
 		
 		currentPos = nodePositions[0][0];
 		txtNode1In.setText(String.valueOf(currentPos));
@@ -225,7 +221,7 @@ public class MenuContrastController extends ToolController {
 		currentPos = nodePositions[0][1];
 		txtNode1Out.setText(String.valueOf(currentPos));
 		sldNode1Out.setValue(currentPos);
-		node1.setCenterY(currentPos);
+		node1.setCenterY(255 - currentPos);
 		
 		currentPos = nodePositions[1][0];
 		txtNode2In.setText(String.valueOf(currentPos));
@@ -235,31 +231,76 @@ public class MenuContrastController extends ToolController {
 		currentPos = nodePositions[1][1];
 		txtNode2Out.setText(String.valueOf(currentPos));
 		sldNode2Out.setValue(currentPos);
-		node2.setCenterY(currentPos);
+		node2.setCenterY(255 - currentPos);
 		
 		// TODO draw a line between the nodes and the origin/255,255
 	}
 	
-	private void updatePosition(Circle node, int nodeDimension, double newValue) {
-		int newPosition = 0;
+	private void updatePosition(Node node, int nodeDimension, double newValue) {
 		if (newValue >= 0) {
-			// Truncate the number
-			newPosition = (int) Math.floor(newValue);
-		}
-		
-		// Filthy shortcut, but I want to keep this somewhat scalable, but don't want to
-		// get into a mess of EventListeners pls
-		nodePositions[(int) node.getUserData() - 1][nodeDimension] = newPosition;
-		
-		// Update the UI elements to reflect the change
-		refresh();
+			int newPosition = 0;
 
-		// Only process the image after the initial UI load
-		if (parentController != null) {
-			// Then only process the image if one is present
-			if (parentController.getImage() != null) {
-				processedImage = contrastStretch(uneditedImage);
-				updateImage();
+			if (newValue > 255) {
+				// Ensure it doesn't exceed max range
+				newPosition = 255;
+			} else {
+				// Truncate the number
+				newPosition = (int) Math.floor(newValue);
+			}
+
+			// Ensure that node 1 is always smaller in both dimensions than node 2
+			if (getNodeNumber(node) == 1) {
+				if (nodeDimension == 0) {
+					// Ensure that node 1 is always to the left of node 2
+					if (nodePositions[1][0] < newPosition && nodePositions[1][0] == 0) {
+						nodePositions[0][0] = 0;
+					} else if (nodePositions[1][0] < newPosition) {
+						nodePositions[0][0] = nodePositions[1][0] - 1;
+					} else {
+						nodePositions[0][0] = newPosition;
+					}
+				} else {
+					// Ensure that node 1 is always below node 2
+					if (nodePositions[1][1] < newPosition && nodePositions[1][1] == 0) {
+						nodePositions[0][1] = 0;
+					} else if (nodePositions[1][1] < newPosition) {
+						nodePositions[0][1] = nodePositions[1][1] - 1;
+					} else {
+						nodePositions[0][1] = newPosition;
+					}
+				}
+			} else {
+				if (nodeDimension == 0) {
+					// Ensure that node 2 is always to the right of node 1
+					if (nodePositions[0][0] > newPosition && nodePositions[0][0] == 0) {
+						nodePositions[1][0] = 0;
+					} else if (nodePositions[0][0] > newPosition) {
+						nodePositions[1][0] = nodePositions[0][0] + 1;
+					} else {
+						nodePositions[1][0] = newPosition;
+					}
+				} else {
+					// Ensure that node 2 is always above node 1
+					if (nodePositions[0][1] > newPosition && nodePositions[0][1] == 0) {
+						nodePositions[1][1] = 0;
+					} else if (nodePositions[0][1] > newPosition) {
+						nodePositions[1][1] = nodePositions[0][1] + 1;
+					} else {
+						nodePositions[1][1] = newPosition;
+					}
+				}
+			}
+
+			// Update the UI elements to reflect the changed position
+			refreshValues();
+
+			// Only process the image after the initial UI load
+			if (parentController != null) {
+				// Then only process the image if one is present
+				if (parentController.getImage() != null) {
+					processedImage = contrastStretch(uneditedImage);
+					updateImage();
+				}
 			}
 		}
 	}
@@ -269,7 +310,7 @@ public class MenuContrastController extends ToolController {
 		double S1 = nodePositions[0][1];
 		double R2 = nodePositions[1][0];
 		double S2 = nodePositions[1][1];
-		
+
 		// Find the dimensions of the source image
 		int width = (int) sourceImage.getWidth();
 		int height = (int) sourceImage.getHeight();
@@ -282,11 +323,12 @@ public class MenuContrastController extends ToolController {
 		// parameter to the function
 		PixelReader reader = sourceImage.getPixelReader();
 
-		// Pre-calculate the stretch multipliers for each section of the graph
+		// Pre-calculate the stretching gradients to save computation in the loop
 		double stretchLookup[] = {
-				S1 / R1,
+				(S1 / R1),
 				(S2 - S1) / (R2 - R1),
-				(255 - S2) / (255 - R2)};
+				(255 - S2) / (255 - R2)				
+		};		
 
 		// Iterate over all pixels
 		for (int y = 0; y < height; y++) {
@@ -294,8 +336,10 @@ public class MenuContrastController extends ToolController {
 				// For each pixel, get the colour
 				Color color = reader.getColor(x, y);
 
+				// Store each colour channel's value in an array
 				double colours[] = { color.getRed(), color.getGreen(), color.getBlue() };
 
+				// For each colour channel, apply the appropriate multiplication
 				for (int i = 0; i < 3; i++) {
 					if (colours[i] < (R1 / 255)) {
 						colours[i] = colours[i] * stretchLookup[0];
@@ -303,6 +347,10 @@ public class MenuContrastController extends ToolController {
 						colours[i] = (colours[i] - (R2 / 255)) * stretchLookup[2] + (S2 / 255);
 					} else {
 						colours[i] = (colours[i] - (R1 / 255)) * stretchLookup[1] + (S1 / 255);
+					}
+					
+					if (colours[i] > 1) {
+						colours[i] = 1;
 					}
 				}
 
