@@ -121,6 +121,10 @@ public class MainViewController {
 		imgImageViewer.setImage(newImage);
 	}
 
+	public void setStatusText(String text) {
+		txtLeftStatus.setText(text);
+	}
+	
 	@FXML
 	void fileOpenClicked(ActionEvent event) {
 		openFile();
@@ -305,14 +309,14 @@ public class MainViewController {
 			if (!img.getImage().equals(icons[toolType.getIndex()][ButtonStatus.SELECTED.getValue()])) {
 				// Don't show the wrong graphic if the tool is in use
 				img.setImage(icons[toolType.getIndex()][ButtonStatus.HOVERED.getValue()]);
-				txtLeftStatus.setText(toolType.getInternalToolName() + " tool");
+				setStatusText(toolType.getInternalToolName() + " tool");
 			}
 		} else {
 			// If the mouse is stopping hovering over the button
 			if (!img.getImage().equals(icons[toolType.getIndex()][ButtonStatus.SELECTED.getValue()])) {
 				// Don't show the wrong graphic if the tool is in use
 				img.setImage(icons[toolType.getIndex()][ButtonStatus.DESELECTED.getValue()]);
-				txtLeftStatus.setText("");
+				setStatusText("");
 			}
 		}
 	}
@@ -352,7 +356,7 @@ public class MainViewController {
 			}
 		}
 	}
-
+	
 	private void resetUI() {
 		// Reset the tool icon images
 		for (Tool t : Tool.values()) {
