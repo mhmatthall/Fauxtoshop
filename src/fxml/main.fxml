@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.chart.AreaChart?>
-<?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
@@ -73,19 +72,19 @@
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </padding>
             </Pane>
-        <AnchorPane maxWidth="300.0" minWidth="300.0" prefWidth="300.0" SplitPane.resizableWithParent="false">
+        <AnchorPane maxWidth="600.0" minWidth="300.0" prefWidth="300.0" SplitPane.resizableWithParent="false">
           <children>
                   <Label layoutX="14.0" layoutY="14.0" style="&#10;" text="Histogram" textFill="#304ffe" wrapText="false">
                      <font>
                         <Font fx:id="fontTitle" size="18.0" />
                      </font>
                   </Label>
-                  <AreaChart fx:id="chtHistogram" alternativeRowFillVisible="false" createSymbols="false" horizontalGridLinesVisible="false" horizontalZeroLineVisible="false" layoutX="6.0" layoutY="54.0" legendVisible="false" maxWidth="300.0" minWidth="300.0" prefWidth="300.0" verticalGridLinesVisible="false" verticalZeroLineVisible="false">
+                  <AreaChart fx:id="chtHistogram" alternativeRowFillVisible="false" animated="false" createSymbols="false" horizontalGridLinesVisible="false" horizontalZeroLineVisible="false" layoutX="6.0" layoutY="54.0" legendVisible="false" maxWidth="300.0" minWidth="300.0" prefWidth="300.0" verticalGridLinesVisible="false" verticalZeroLineVisible="false" AnchorPane.leftAnchor="6.0" AnchorPane.rightAnchor="0.0">
                     <xAxis>
-                      <CategoryAxis side="BOTTOM" />
+                      <NumberAxis minorTickCount="1" minorTickVisible="false" side="BOTTOM" tickLabelsVisible="false" tickMarkVisible="false" upperBound="255.0" fx:id="xAxis" />
                     </xAxis>
                     <yAxis>
-                      <NumberAxis minorTickVisible="false" side="LEFT" tickLabelsVisible="false" tickMarkVisible="false" />
+                      <NumberAxis fx:id="yAxis" minorTickVisible="false" side="LEFT" tickLabelsVisible="false" tickMarkVisible="false" />
                     </yAxis>
                   </AreaChart>
                   <Label layoutX="14.0" layoutY="444.0" style="&#10;" text="Channels" textFill="#304ffe" wrapText="false">
@@ -93,7 +92,7 @@
                         <Font fx:id="fontSubtitle" size="14.0" />
                      </font>
                   </Label>
-                  <CheckBox fx:id="chkHistogramShowRGB" layoutX="20.0" layoutY="469.0" mnemonicParsing="false" onAction="#histogramShowRGBBoxChanged" text="RGB" />
+                  <CheckBox fx:id="chkHistogramShowRGB" layoutX="20.0" layoutY="469.0" mnemonicParsing="false" onAction="#histogramShowRGBBoxChanged" selected="true" text="RGB" />
                   <CheckBox fx:id="chkHistogramShowBlue" layoutX="230.0" layoutY="469.0" mnemonicParsing="false" onAction="#histogramShowBlueBoxChanged" text="Blue" />
                   <CheckBox fx:id="chkHistogramShowGreen" layoutX="160.0" layoutY="469.0" mnemonicParsing="false" onAction="#histogramShowGreenBoxChanged" text="Green" />
                   <CheckBox fx:id="chkHistogramShowRed" layoutX="90.0" layoutY="469.0" mnemonicParsing="false" onAction="#histogramShowRedBoxChanged" text="Red" />

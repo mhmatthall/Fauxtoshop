@@ -81,6 +81,7 @@ public class ToolController {
 			// If the user wants to show changes as they're being made
 			if (chkShowChanges.isSelected()) {
 				parentController.setImage(processedImage);
+				parentController.refreshHistogram();
 			} else {
 				parentController.setImage(uneditedImage);
 			}

@@ -9,6 +9,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.chart.AreaChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
@@ -16,9 +18,11 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.SplitPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelReader;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -28,6 +32,9 @@ public class MainViewController {
 	private Image[][] icons = new Image[Tool.values().length][ButtonStatus.values().length];
 	private ToolController currentToolController;
 	private Stage stage;
+	private int[][] distribution;
+	// shows RGB histo by default
+	private boolean[] showHistogramChannels = { false, false, false, true };
 
 	@FXML
 	private MenuItem menuFileNew;
@@ -46,12 +53,6 @@ public class MainViewController {
 
 	@FXML
 	private MenuItem menuFileQuit;
-
-	@FXML
-	private MenuItem menuEditUndo;
-
-	@FXML
-	private MenuItem menuEditRedo;
 
 	@FXML
 	private Menu menuAbout;
@@ -80,9 +81,15 @@ public class MainViewController {
 	@FXML
 	private ImageView imgImageViewer;
 
-	@FXML
-	private AreaChart<?, ?> chtHistogram;
+    @FXML
+    private NumberAxis xAxis;
 
+    @FXML
+    private NumberAxis yAxis;
+    
+    @FXML
+    private AreaChart<Number, Number> chtHistogram;
+	
 	@FXML
 	private CheckBox chkHistogramShowRGB;
 
@@ -199,27 +206,105 @@ public class MainViewController {
 	void btnBlurEndHover(MouseEvent event) {
 		hoverEffect(Tool.BLUR, event);
 	}
-
+	
 	@FXML
-	void histogramShowBlueBoxChanged(ActionEvent event) {
-
+	void histogramShowRedBoxChanged(ActionEvent event) {
+		if (chkHistogramShowRed.isSelected()) {
+			showHistogramChannels[0] = true;
+		} else {
+			showHistogramChannels[0] = false;
+		}
+		refreshHistogram();
 	}
 
 	@FXML
 	void histogramShowGreenBoxChanged(ActionEvent event) {
-
+		if (chkHistogramShowGreen.isSelected()) {
+			showHistogramChannels[1] = true;
+		} else {
+			showHistogramChannels[1] = false;
+		}
+		refreshHistogram();
+	}
+	
+	@FXML
+	void histogramShowBlueBoxChanged(ActionEvent event) {
+		if (chkHistogramShowBlue.isSelected()) {
+			showHistogramChannels[2] = true;
+		} else {
+			showHistogramChannels[2] = false;
+		}
+		refreshHistogram();
 	}
 
 	@FXML
 	void histogramShowRGBBoxChanged(ActionEvent event) {
-
+		if (chkHistogramShowRGB.isSelected()) {
+			showHistogramChannels[3] = true;
+		} else {
+			showHistogramChannels[3] = false;
+		}
+		refreshHistogram();
 	}
 
-	@FXML
-	void histogramShowRedBoxChanged(ActionEvent event) {
+	public void refreshHistogram() {
+		if (imgImageViewer.getImage() == null) {
+			// If the image has been removed, then clear the histogram
+			chtHistogram.getData().clear();
+		} else {
+			// Recalculate the histogram values
+			calculateHistogramValues(imgImageViewer.getImage());
 
+			// Draw each channel if it has been selected
+			for (int i = 0; i < showHistogramChannels.length; i++) {
+				if (showHistogramChannels[i] == true) {
+					drawHistogramChannel(i);
+				}
+			}
+		}
 	}
+	
+	private void calculateHistogramValues(Image sourceImage) {
+		// Clear the existing values
+		distribution = new int[4][256];
+		chtHistogram.getData().clear();
+		
+		// Find the dimensions of the source image
+		int width = (int) sourceImage.getWidth();
+		int height = (int) sourceImage.getHeight();
 
+		// Get an interface to read from the original image passed as the
+		// parameter to the function
+		PixelReader reader = sourceImage.getPixelReader();
+
+		// Iterate over all pixels
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < width; x++) {
+				// For each pixel, get the colour
+				Color colour = reader.getColor(x, y);
+
+				// For each colour channel and brightness, increment the relevant tally
+				distribution[0][(int) (colour.getRed() * 255)]++;
+				distribution[1][(int) (colour.getGreen() * 255)]++;
+				distribution[2][(int) (colour.getBlue() * 255)]++;
+				distribution[3][(int) (colour.getBrightness() * 255)]++;
+			}
+		}
+	}
+	
+	private void drawHistogramChannel(int channelID) {
+		XYChart.Series<Number, Number> channelDataSeries = new XYChart.Series<>();
+		XYChart.Data<Number, Number> channelData;
+
+		for (int i = 0; i < distribution[0].length; i++) {
+			channelData = new XYChart.Data<Number, Number>(i, distribution[channelID][i]);
+			channelDataSeries.getData().add(channelData);
+		}
+
+//		-fx-bar-fill: #000000
+		chtHistogram.getData().add(channelDataSeries);
+	}
+	
 	private void loadIcons() {
 		try {
 			for (Tool t : Tool.values()) {
@@ -244,7 +329,7 @@ public class MainViewController {
 
 	private void closeFile() {
 		// Reset the tool panels
-		resetUI();
+		resetToolPane();
 
 		// Clear the tool's stored image cache
 		if (currentToolController != null) {
@@ -254,6 +339,9 @@ public class MainViewController {
 
 		// Remove the displayed image
 		imgImageViewer.setImage(null);
+		
+		// Update the histogram
+		refreshHistogram();
 
 		// Update the window title
 		stage.setTitle("Photoshop");
@@ -288,6 +376,8 @@ public class MainViewController {
 
 				// Update the window title
 				stage.setTitle("Photoshop - '" + chosenImage.getName() + "'");
+				
+				refreshHistogram();
 
 				// Re-enable the UI
 				pneMainSplit.disableProperty().set(false);
@@ -328,7 +418,7 @@ public class MainViewController {
 	 */
 	private void changeTool(Tool toolType, MouseEvent event) {
 		if (!pneMainSplit.isDisable()) {
-			resetUI();
+			resetToolPane();
 
 			// Obtain the button being actioned upon
 			ImageView img = (ImageView) event.getTarget();
@@ -350,14 +440,14 @@ public class MainViewController {
 				pneToolPane.getChildren().add(newPane);
 
 			} catch (IOException ex) {
-				// If no such FXML file could be found
-				System.out.println("-ERROR: TOOL FXML FILE NOT FOUND------------------");
+				// If no such FXML file could be found, or the file is invalid
+				System.out.println("-ERROR: INVALID TOOL FXML FILE------------------");
 				ex.printStackTrace();
 			}
 		}
 	}
 	
-	private void resetUI() {
+	private void resetToolPane() {
 		// Reset the tool icon images
 		for (Tool t : Tool.values()) {
 			Node currentTool = pneToolSelector.getChildren().get(t.getIndex());
