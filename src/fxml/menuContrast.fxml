@@ -10,6 +10,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
@@ -27,14 +28,17 @@
          <children>
             <Circle fx:id="node1" fill="#304ffe" onMouseDragged="#node1Dragged" onMousePressed="#node1StartDrag" onMouseReleased="#node1EndDrag" radius="3.0" stroke="TRANSPARENT" strokeType="INSIDE">
                <cursor>
-                  <Cursor fx:constant="OPEN_HAND" />
+                  <Cursor fx:constant="HAND" />
                </cursor>
             </Circle>
             <Circle fx:id="node2" fill="#304ffe" onMouseDragged="#node2Dragged" onMousePressed="#node2StartDrag" onMouseReleased="#node2EndDrag" radius="3.0" stroke="TRANSPARENT" strokeType="INSIDE">
                <cursor>
-                  <Cursor fx:constant="OPEN_HAND" />
+                  <Cursor fx:constant="HAND" />
                </cursor>
             </Circle>
+            <Line fx:id="line1" fill="TRANSPARENT" startY="255.0" stroke="#304ffe" strokeLineCap="BUTT" />
+            <Line fx:id="line2" fill="TRANSPARENT" stroke="#304ffe" strokeLineCap="BUTT" />
+            <Line fx:id="line3" fill="TRANSPARENT" startX="255.0" stroke="#304ffe" strokeLineCap="BUTT" />
          </children>
       </Group>
       <Label layoutX="15.0" layoutY="367.0" style="&#10;" text="Node 1" textFill="#304ffe" wrapText="false">

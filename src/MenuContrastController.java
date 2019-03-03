@@ -15,6 +15,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 
 public class MenuContrastController extends ToolController {
@@ -25,8 +26,6 @@ public class MenuContrastController extends ToolController {
 	private Point newPos = new Point();
 	private int[][] nodePositions = new int[MAX_ALLOWED_NODES][2];
 	
-	// TODO add boolean to prevent lag caused by processing during drag
-	
     @FXML
     private Group grpNodes;
 	
@@ -36,6 +35,15 @@ public class MenuContrastController extends ToolController {
     @FXML
     private Circle node2;
 
+    @FXML
+    private Line line1;
+
+    @FXML
+    private Line line2;
+
+    @FXML
+    private Line line3;
+    
     @FXML
     private Rectangle stretchArea;
 
@@ -68,7 +76,7 @@ public class MenuContrastController extends ToolController {
 		// Set the nodes to their default positions (bottom left, top right)
 		nodePositions[1][0] = 255;
 		nodePositions[1][1] = 255;
-		refreshValues();
+		refreshUI();
 	}
     
     @FXML
@@ -165,6 +173,9 @@ public class MenuContrastController extends ToolController {
     	// Set the origin as the current global mouse position
     	oldPos.setLocation(event.getSceneX(), event.getSceneY());
     	
+    	// Update the status text to indicate dragging
+    	parentController.setStatusText("Adjusting node " + node.getId().charAt(node.getId().length() - 1));
+    	
     	// Change the cursor to indicate start of drag
     	node.setCursor(Cursor.CLOSED_HAND);
     }
@@ -200,17 +211,18 @@ public class MenuContrastController extends ToolController {
 	}
 
     private void endNodeDrag(Circle node, MouseEvent event) {
-    	// Change the cursor to indicate end of drag
-    	node.setCursor(Cursor.OPEN_HAND);
+    	// Clear the status text
+    	parentController.setStatusText("");
     	
-    	// TODO add status bar info changing
+    	// Change the cursor to indicate end of drag
+    	node.setCursor(Cursor.HAND);
     }
 
     private int getNodeNumber(Node node) {
     	return Integer.valueOf(node.getId().substring(node.getId().length() - 1));
     }
     
-	private void refreshValues() {
+	private void refreshUI() {
 		int currentPos = 0;
 		
 		currentPos = nodePositions[0][0];
@@ -233,7 +245,17 @@ public class MenuContrastController extends ToolController {
 		sldNode2Out.setValue(currentPos);
 		node2.setCenterY(255 - currentPos);
 		
-		// TODO draw a line between the nodes and the origin/255,255
+		// Move the lines along with the nodes
+		line1.setEndX(node1.getCenterX());
+		line1.setEndY(node1.getCenterY());
+		
+		line2.setStartX(node1.getCenterX());
+		line2.setStartY(node1.getCenterY());
+		line2.setEndX(node2.getCenterX());
+		line2.setEndY(node2.getCenterY());
+		
+		line3.setEndX(node2.getCenterX());
+		line3.setEndY(node2.getCenterY());
 	}
 	
 	private void updatePosition(Node node, int nodeDimension, double newValue) {
@@ -292,7 +314,7 @@ public class MenuContrastController extends ToolController {
 			}
 
 			// Update the UI elements to reflect the changed position
-			refreshValues();
+			refreshUI();
 
 			// Only process the image after the initial UI load
 			if (parentController != null) {
