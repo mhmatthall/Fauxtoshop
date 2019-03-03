@@ -268,7 +268,7 @@ public class MainViewController {
 		// Clear the existing values
 		distribution = new int[4][256];
 		chtHistogram.getData().clear();
-		
+
 		// Find the dimensions of the source image
 		int width = (int) sourceImage.getWidth();
 		int height = (int) sourceImage.getHeight();
@@ -283,11 +283,16 @@ public class MainViewController {
 				// For each pixel, get the colour
 				Color colour = reader.getColor(x, y);
 
+				int r = (int) (colour.getRed() * 255);
+				int g = (int) (colour.getGreen() * 255);
+				int b = (int) (colour.getBlue() * 255);
+				int v = (int) (r + g + b) / 3;
+
 				// For each colour channel and brightness, increment the relevant tally
-				distribution[0][(int) (colour.getRed() * 255)]++;
-				distribution[1][(int) (colour.getGreen() * 255)]++;
-				distribution[2][(int) (colour.getBlue() * 255)]++;
-				distribution[3][(int) (colour.getBrightness() * 255)]++;
+				distribution[0][r]++;
+				distribution[1][g]++;
+				distribution[2][b]++;
+				distribution[3][v]++;
 			}
 		}
 	}
