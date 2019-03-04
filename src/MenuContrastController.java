@@ -18,58 +18,68 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 
+/**
+ * Contrast stretching tool for Fauxtoshop
+ * <p>
+ * I declare that the following is my own work.
+ * 
+ * @author Matt Hall (961500)
+ */
 public class MenuContrastController extends ToolController {
+	/**
+	 * The number of nodes that can be adjusted in the stretching graph
+	 */
 	private final int MAX_ALLOWED_NODES = 2;
-	
+
 	private Point oldPos = new Point();
 	private Point offset = new Point();
 	private Point newPos = new Point();
 	private int[][] nodePositions = new int[MAX_ALLOWED_NODES][2];
-	
-    @FXML
-    private Group grpNodes;
-	
-    @FXML
-    private Circle node1;
 
-    @FXML
-    private Circle node2;
+	@FXML
+	private Group grpNodes;
 
-    @FXML
-    private Line line1;
+	@FXML
+	private Circle node1;
 
-    @FXML
-    private Line line2;
+	@FXML
+	private Circle node2;
 
-    @FXML
-    private Line line3;
-    
-    @FXML
-    private Rectangle stretchArea;
+	@FXML
+	private Line line1;
 
-    @FXML
-    private TextField txtNode1In;
+	@FXML
+	private Line line2;
 
-    @FXML
-    private Slider sldNode1In;
+	@FXML
+	private Line line3;
 
-    @FXML
-    private TextField txtNode1Out;
+	@FXML
+	private Rectangle stretchArea;
 
-    @FXML
-    private Slider sldNode1Out;
+	@FXML
+	private TextField txtNode1In;
 
-    @FXML
-    private TextField txtNode2In;
+	@FXML
+	private Slider sldNode1In;
 
-    @FXML
-    private Slider sldNode2In;
+	@FXML
+	private TextField txtNode1Out;
 
-    @FXML
-    private TextField txtNode2Out;
+	@FXML
+	private Slider sldNode1Out;
 
-    @FXML
-    private Slider sldNode2Out;
+	@FXML
+	private TextField txtNode2In;
+
+	@FXML
+	private Slider sldNode2In;
+
+	@FXML
+	private TextField txtNode2Out;
+
+	@FXML
+	private Slider sldNode2Out;
 
 	@FXML
 	private void initialize() {
@@ -78,108 +88,120 @@ public class MenuContrastController extends ToolController {
 		nodePositions[1][1] = 255;
 		refreshUI();
 	}
-    
-    @FXML
-    void node1StartDrag(MouseEvent event) {
-    	startNodeDrag(node1, event);
-    }
-    
-    @FXML
-    void node1Dragged(MouseEvent event) {
-    	dragNode(node1, event);
-    }
-    
-    @FXML
-    void node1EndDrag(MouseEvent event) {
-    	endNodeDrag(node1, event);
-    }
-    
-    @FXML
-    void node1InSliderUpdated(MouseEvent event) {
-    	updatePosition(node1, 0, sldNode1In.getValue());
-    }
 
-    @FXML
-    void node1InTextChanged(ActionEvent event) {
-    	updatePosition(node1, 0, Double.valueOf(txtNode1In.getText()));
-    }
+	@FXML
+	void node1StartDrag(MouseEvent event) {
+		startNodeDrag(node1, event);
+	}
 
-    @FXML
-    void node1InTextScrolled(ScrollEvent event) {
+	@FXML
+	void node1Dragged(MouseEvent event) {
+		dragNode(node1, event);
+	}
+
+	@FXML
+	void node1EndDrag(MouseEvent event) {
+		endNodeDrag(node1, event);
+	}
+
+	@FXML
+	void node1InSliderUpdated(MouseEvent event) {
+		updatePosition(node1, 0, sldNode1In.getValue());
+	}
+
+	@FXML
+	void node1InTextChanged(ActionEvent event) {
+		updatePosition(node1, 0, Double.valueOf(txtNode1In.getText()));
+	}
+
+	@FXML
+	void node1InTextScrolled(ScrollEvent event) {
 		updatePosition(node1, 0, nodePositions[0][0] + event.getDeltaY() * 0.125);
 	}
 
-    @FXML
-    void node1OutSliderUpdated(MouseEvent event) {
-    	updatePosition(node1, 1, sldNode1Out.getValue());
-    }
+	@FXML
+	void node1OutSliderUpdated(MouseEvent event) {
+		updatePosition(node1, 1, sldNode1Out.getValue());
+	}
 
-    @FXML
-    void node1OutTextChanged(ActionEvent event) {
-    	updatePosition(node1, 1, Double.valueOf(txtNode1Out.getText()));
-    }
+	@FXML
+	void node1OutTextChanged(ActionEvent event) {
+		updatePosition(node1, 1, Double.valueOf(txtNode1Out.getText()));
+	}
 
-    @FXML
-    void node1OutTextScrolled(ScrollEvent event) {
-    	updatePosition(node1, 1, nodePositions[0][1] + event.getDeltaY() * 0.125);
-    }
+	@FXML
+	void node1OutTextScrolled(ScrollEvent event) {
+		updatePosition(node1, 1, nodePositions[0][1] + event.getDeltaY() * 0.125);
+	}
 
-    @FXML
-    void node2StartDrag(MouseEvent event) {
-    	startNodeDrag(node2, event);
-    }
-    
-    @FXML
-    void node2Dragged(MouseEvent event) {
-    	dragNode(node2, event);
-    }
-    
-    @FXML
-    void node2EndDrag(MouseEvent event) {
-    	endNodeDrag(node2, event);
-    }
+	@FXML
+	void node2StartDrag(MouseEvent event) {
+		startNodeDrag(node2, event);
+	}
 
-    @FXML
-    void node2InSliderUpdated(MouseEvent event) {
-    	updatePosition(node2, 0, sldNode2In.getValue());
-    }
+	@FXML
+	void node2Dragged(MouseEvent event) {
+		dragNode(node2, event);
+	}
 
-    @FXML
-    void node2InTextChanged(ActionEvent event) {
-    	updatePosition(node2, 0, Double.valueOf(txtNode2In.getText()));
-    }
+	@FXML
+	void node2EndDrag(MouseEvent event) {
+		endNodeDrag(node2, event);
+	}
 
-    @FXML
-    void node2InTextScrolled(ScrollEvent event) {
-    	updatePosition(node2, 0, nodePositions[1][0] + event.getDeltaY() * 0.125);
-    }
+	@FXML
+	void node2InSliderUpdated(MouseEvent event) {
+		updatePosition(node2, 0, sldNode2In.getValue());
+	}
 
-    @FXML
-    void node2OutSliderUpdated(MouseEvent event) {
-    	updatePosition(node2, 1, sldNode2Out.getValue());
-    }
+	@FXML
+	void node2InTextChanged(ActionEvent event) {
+		updatePosition(node2, 0, Double.valueOf(txtNode2In.getText()));
+	}
 
-    @FXML
-    void node2OutTextChanged(ActionEvent event) {
-    	updatePosition(node2, 1, Double.valueOf(txtNode2Out.getText()));
-    }
+	@FXML
+	void node2InTextScrolled(ScrollEvent event) {
+		updatePosition(node2, 0, nodePositions[1][0] + event.getDeltaY() * 0.125);
+	}
 
-    @FXML
-    void node2OutTextScrolled(ScrollEvent event) {
-    	updatePosition(node2, 1, nodePositions[1][1] + event.getDeltaY() * 0.125);
-    }
+	@FXML
+	void node2OutSliderUpdated(MouseEvent event) {
+		updatePosition(node2, 1, sldNode2Out.getValue());
+	}
 
-    private void startNodeDrag(Circle node, MouseEvent event) {
-    	// Set the origin as the current global mouse position
-    	oldPos.setLocation(event.getSceneX(), event.getSceneY());
-    	
-    	// Update the status text to indicate dragging
-    	parentController.setStatusText("Adjusting node " + node.getId().charAt(node.getId().length() - 1));
-    	
-    	// Change the cursor to indicate start of drag
-    	node.setCursor(Cursor.CLOSED_HAND);
-    }
-    
+	@FXML
+	void node2OutTextChanged(ActionEvent event) {
+		updatePosition(node2, 1, Double.valueOf(txtNode2Out.getText()));
+	}
+
+	@FXML
+	void node2OutTextScrolled(ScrollEvent event) {
+		updatePosition(node2, 1, nodePositions[1][1] + event.getDeltaY() * 0.125);
+	}
+
+	/**
+	 * Called when a node drag is started
+	 * 
+	 * @param node  The node being dragged
+	 * @param event The mouse event involved in the drag
+	 */
+	private void startNodeDrag(Circle node, MouseEvent event) {
+		// Set the origin as the current global mouse position
+		oldPos.setLocation(event.getSceneX(), event.getSceneY());
+
+		// Update the status text to indicate dragging
+		parentController.setStatusText("Adjusting node " + node.getId().charAt(node.getId().length() - 1));
+
+		// Change the cursor to indicate start of drag
+		node.setCursor(Cursor.CLOSED_HAND);
+	}
+
+	/**
+	 * Called every time the mouse position is moved whilst a node is being dragged
+	 * 
+	 * @param node  The node being dragged
+	 * @param event The mouse event involved in the drag
+	 */
 	private void dragNode(Circle node, MouseEvent event) {
 		// Set the offset as the delta between the current and previous mouse locations
 		offset.setLocation(event.getSceneX() - oldPos.getX(), event.getSceneY() - oldPos.getY());
@@ -200,64 +222,86 @@ public class MenuContrastController extends ToolController {
 		} else if (newPos.getY() < 0) {
 			newPos.setLocation(newPos.getX(), 0);
 		}
-		
-		
+
 		// Set the circle's new location
 		updatePosition(node, 0, newPos.getX());
 		updatePosition(node, 1, (255 - newPos.getY()));
-		
-		// Make sure we reset the old pos between each drag 
+
+		// Make sure we reset the old pos between each drag
 		oldPos.setLocation(event.getSceneX(), event.getSceneY());
 	}
 
-    private void endNodeDrag(Circle node, MouseEvent event) {
-    	// Clear the status text
-    	parentController.setStatusText("");
-    	
-    	// Change the cursor to indicate end of drag
-    	node.setCursor(Cursor.HAND);
-    }
+	/**
+	 * Called when the mouse is released after a drag
+	 * 
+	 * @param node  The node being dragged
+	 * @param event The mouse event involved in the drag
+	 */
+	private void endNodeDrag(Circle node, MouseEvent event) {
+		// Clear the status text
+		parentController.setStatusText("");
 
-    private int getNodeNumber(Node node) {
-    	return Integer.valueOf(node.getId().substring(node.getId().length() - 1));
-    }
-    
+		// Change the cursor to indicate end of drag
+		node.setCursor(Cursor.HAND);
+	}
+
+	/**
+	 * Gets the number of the node used to reference its corresponding files
+	 * 
+	 * @param node The node being referenced
+	 * @return The ID of the node (1+)
+	 */
+	private int getNodeNumber(Node node) {
+		return Integer.valueOf(node.getId().substring(node.getId().length() - 1));
+	}
+
+	/**
+	 * Update all of the text fields, sliders, node positions, and joining lines
+	 * when any of the values is updated
+	 */
 	private void refreshUI() {
 		int currentPos = 0;
-		
+
 		currentPos = nodePositions[0][0];
 		txtNode1In.setText(String.valueOf(currentPos));
 		sldNode1In.setValue(currentPos);
 		node1.setCenterX(currentPos);
-		
+
 		currentPos = nodePositions[0][1];
 		txtNode1Out.setText(String.valueOf(currentPos));
 		sldNode1Out.setValue(currentPos);
 		node1.setCenterY(255 - currentPos);
-		
+
 		currentPos = nodePositions[1][0];
 		txtNode2In.setText(String.valueOf(currentPos));
 		sldNode2In.setValue(currentPos);
 		node2.setCenterX(currentPos);
-		
+
 		currentPos = nodePositions[1][1];
 		txtNode2Out.setText(String.valueOf(currentPos));
 		sldNode2Out.setValue(currentPos);
 		node2.setCenterY(255 - currentPos);
-		
+
 		// Move the lines along with the nodes
 		line1.setEndX(node1.getCenterX());
 		line1.setEndY(node1.getCenterY());
-		
+
 		line2.setStartX(node1.getCenterX());
 		line2.setStartY(node1.getCenterY());
 		line2.setEndX(node2.getCenterX());
 		line2.setEndY(node2.getCenterY());
-		
+
 		line3.setEndX(node2.getCenterX());
 		line3.setEndY(node2.getCenterY());
 	}
-	
+
+	/**
+	 * Sets the position of a node in one dimension
+	 * 
+	 * @param node          The node being moved
+	 * @param nodeDimension The axis of movement; X:0, Y:1
+	 * @param newValue      The position to move the node to
+	 */
 	private void updatePosition(Node node, int nodeDimension, double newValue) {
 		if (newValue >= 0) {
 			int newPosition = 0;
@@ -327,6 +371,12 @@ public class MenuContrastController extends ToolController {
 		}
 	}
 
+	/**
+	 * Apply contrast stretching to the image using the input values
+	 * 
+	 * @param sourceImage The original, unedited image
+	 * @return The final edited image
+	 */
 	private Image contrastStretch(Image sourceImage) {
 		double R1 = nodePositions[0][0];
 		double S1 = nodePositions[0][1];
@@ -346,11 +396,7 @@ public class MenuContrastController extends ToolController {
 		PixelReader reader = sourceImage.getPixelReader();
 
 		// Pre-calculate the stretching gradients to save computation in the loop
-		double stretchLookup[] = {
-				(S1 / R1),
-				(S2 - S1) / (R2 - R1),
-				(255 - S2) / (255 - R2)				
-		};		
+		double stretchLookup[] = { (S1 / R1), (S2 - S1) / (R2 - R1), (255 - S2) / (255 - R2) };
 
 		// Iterate over all pixels
 		for (int y = 0; y < height; y++) {
@@ -370,7 +416,7 @@ public class MenuContrastController extends ToolController {
 					} else {
 						colours[i] = (colours[i] - (R1 / 255)) * stretchLookup[1] + (S1 / 255);
 					}
-					
+
 					if (colours[i] > 1) {
 						colours[i] = 1;
 					}

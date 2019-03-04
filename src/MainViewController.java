@@ -26,15 +26,41 @@ import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+/**
+ * Core user interface used to display Fauxtoshop
+ * <p>
+ * I declare that the following is my own work.
+ * 
+ * @author Matt Hall (961500)
+ */
 public class MainViewController {
+	/**
+	 * A list of the file extensions that can be loaded by the program
+	 */
 	private final String[] ACCEPTED_FILE_EXTENSIONS = { "*.png", "*.jpg", "*.jpeg", "*.bmp", ".gif" };
 
+	/**
+	 * Array containing icons for each tool, and for each state
+	 */
 	private Image[][] icons = new Image[Tool.values().length][ButtonStatus.values().length];
+
+	/**
+	 * The controller for the currently loaded tool
+	 */
 	private ToolController currentToolController;
-	private Stage stage;
-	// shows RGB histo by default
+
+	/**
+	 * User selection of the histogram channels to be enabled
+	 * <p>
+	 * Combined (RGB) channel is enabled by default
+	 */
 	private boolean[] showHistogramChannels = { false, false, false, true };
-	
+
+	private Stage stage;
+
+	/**
+	 * Histogram value tally for each colour channel plus combined RGB channel
+	 */
 	public int[][] distribution;
 
 	@FXML
@@ -66,7 +92,7 @@ public class MainViewController {
 
 	@FXML
 	private AnchorPane pneToolPane;
-	
+
 	@FXML
 	private ImageView btnEffects;
 
@@ -82,15 +108,15 @@ public class MainViewController {
 	@FXML
 	private ImageView imgImageViewer;
 
-    @FXML
-    private NumberAxis xAxis;
+	@FXML
+	private NumberAxis xAxis;
 
-    @FXML
-    private NumberAxis yAxis;
-    
-    @FXML
-    private AreaChart<Number, Number> chtHistogram;
-	
+	@FXML
+	private NumberAxis yAxis;
+
+	@FXML
+	private AreaChart<Number, Number> chtHistogram;
+
 	@FXML
 	private CheckBox chkHistogramShowRGB;
 
@@ -116,23 +142,42 @@ public class MainViewController {
 		loadIcons();
 	}
 
-	// Getters and setters
+	/**
+	 * Sets the controller's stage
+	 * 
+	 * @param stage The main stage to be set
+	 */
 	public void setStage(Stage stage) {
 		this.stage = stage;
 	}
 
+	/**
+	 * Get the currently loaded image
+	 * 
+	 * @return The image being displayed
+	 */
 	public Image getImage() {
 		return imgImageViewer.getImage();
 	}
 
+	/**
+	 * Sets the image
+	 * 
+	 * @param newImage The image to be displayed
+	 */
 	public void setImage(Image newImage) {
 		imgImageViewer.setImage(newImage);
 	}
 
+	/**
+	 * Sets the status help-text message
+	 * 
+	 * @param text The text to be displayed
+	 */
 	public void setStatusText(String text) {
 		txtLeftStatus.setText(text);
 	}
-	
+
 	@FXML
 	void fileOpenClicked(ActionEvent event) {
 		openFile();
@@ -207,7 +252,7 @@ public class MainViewController {
 	void btnFilterEndHover(MouseEvent event) {
 		hoverEffect(Tool.FILTER, event);
 	}
-	
+
 	@FXML
 	void histogramShowRedBoxChanged(ActionEvent event) {
 		if (chkHistogramShowRed.isSelected()) {
@@ -227,7 +272,7 @@ public class MainViewController {
 		}
 		refreshHistogram();
 	}
-	
+
 	@FXML
 	void histogramShowBlueBoxChanged(ActionEvent event) {
 		if (chkHistogramShowBlue.isSelected()) {
@@ -248,6 +293,9 @@ public class MainViewController {
 		refreshHistogram();
 	}
 
+	/**
+	 * Clear, recalculate, and redraw the histogram series
+	 */
 	public void refreshHistogram() {
 		if (imgImageViewer.getImage() == null) {
 			// If the image has been removed, then clear the histogram
@@ -264,7 +312,12 @@ public class MainViewController {
 			}
 		}
 	}
-	
+
+	/**
+	 * Calculate the distribution of values in each channel for the histogram
+	 * 
+	 * @param sourceImage The image being analysed
+	 */
 	private void calculateHistogramValues(Image sourceImage) {
 		// Clear the existing values
 		distribution = new int[4][256];
@@ -297,7 +350,12 @@ public class MainViewController {
 			}
 		}
 	}
-	
+
+	/**
+	 * Draws a series of data on the histogram
+	 * 
+	 * @param channelID The colour channel to be drawn
+	 */
 	private void drawHistogramChannel(int channelID) {
 		XYChart.Series<Number, Number> channelDataSeries = new XYChart.Series<>();
 		XYChart.Data<Number, Number> channelData;
@@ -307,10 +365,12 @@ public class MainViewController {
 			channelDataSeries.getData().add(channelData);
 		}
 
-//		-fx-bar-fill: #000000
 		chtHistogram.getData().add(channelDataSeries);
 	}
-	
+
+	/**
+	 * Initialises the stored icons for the tool pane
+	 */
 	private void loadIcons() {
 		try {
 			for (Tool t : Tool.values()) {
@@ -329,10 +389,16 @@ public class MainViewController {
 		}
 	}
 
+	/**
+	 * Shutdown the program
+	 */
 	private void closeProgram() {
 		stage.close();
 	}
 
+	/**
+	 * Remove the current image and reset the UI to its initial state
+	 */
 	private void closeFile() {
 		// Reset the tool panels
 		resetToolPane();
@@ -345,17 +411,20 @@ public class MainViewController {
 
 		// Remove the displayed image
 		imgImageViewer.setImage(null);
-		
+
 		// Update the histogram
 		refreshHistogram();
 
 		// Update the window title
-		stage.setTitle("Photoshop");
+		stage.setTitle("Fauxtoshop");
 
 		// Disable the UI
 		pneMainSplit.disableProperty().set(true);
 	}
 
+	/**
+	 * Allows the user to pick a file to be edited
+	 */
 	private void openFile() {
 		FileChooser picker = new FileChooser();
 
@@ -381,8 +450,8 @@ public class MainViewController {
 				imgImageViewer.setImage(img);
 
 				// Update the window title
-				stage.setTitle("Photoshop - '" + chosenImage.getName() + "'");
-				
+				stage.setTitle("Fauxtoshop - '" + chosenImage.getName() + "'");
+
 				refreshHistogram();
 
 				// Re-enable the UI
@@ -396,6 +465,12 @@ public class MainViewController {
 		}
 	}
 
+	/**
+	 * Switches tool icon images depending on the user action
+	 * 
+	 * @param toolType The tool being interacted with
+	 * @param event    The mouse event involved in the interaction
+	 */
 	private void hoverEffect(Tool toolType, MouseEvent event) {
 		// Obtain the button being actioned upon
 		ImageView img = (ImageView) event.getTarget();
@@ -452,9 +527,12 @@ public class MainViewController {
 			}
 		}
 	}
-	
+
+	/**
+	 * Resets the tool icons to their original deselected state
+	 */
 	private void resetToolPane() {
-		// Reset the tool icon images
+		// Reset all tool icon images to be deselected
 		for (Tool t : Tool.values()) {
 			Node currentTool = pneToolSelector.getChildren().get(t.getIndex());
 			String path = "ico/ico" + t.getInternalToolName() + "Deselected.png";

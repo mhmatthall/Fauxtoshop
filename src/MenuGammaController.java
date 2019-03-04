@@ -11,7 +11,9 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.paint.Color;
 
 /**
- * The gamma correction module for the CS-255 Photoshop coursework.
+ * Gamma correction tool for Fauxtoshop
+ * <p>
+ * I declare that the following is my own work.
  * 
  * @author Matt Hall (961500)
  */

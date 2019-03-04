@@ -8,6 +8,8 @@ import javafx.scene.image.Image;
  * The root of all tool controllers, allowing them to integrate with the rest of
  * the program. All tool controllers must have an 'Accept' button and 'Show
  * changes' checkbox on their forms.
+ * <p>
+ * I declare that the following is my own work.
  * 
  * @author Matt Hall (961500)
  */
