@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class Photoshop2019 extends Application {
@@ -25,6 +26,13 @@ public class Photoshop2019 extends Application {
 			// Assign and customise the stage
 			stage = mainStage;
 			stage.setTitle("Photoshop");
+			
+			// Load the program icons of various sizes
+			stage.getIcons().add(new Image("ico/logo256.png"));
+			stage.getIcons().add(new Image("ico/logo48.png"));
+			stage.getIcons().add(new Image("ico/logo32.png"));
+			stage.getIcons().add(new Image("ico/logo24.png"));
+			stage.getIcons().add(new Image("ico/logo16.png"));
 			
 			// Pass the stage into the controller so we can easily use it
 			MainViewController controller = loader.getController();
