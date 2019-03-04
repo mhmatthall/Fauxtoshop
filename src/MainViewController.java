@@ -66,7 +66,7 @@ public class MainViewController {
 
 	@FXML
 	private AnchorPane pneToolPane;
-
+	
 	@FXML
 	private ImageView btnEffects;
 
@@ -77,7 +77,7 @@ public class MainViewController {
 	private ImageView btnContrast;
 
 	@FXML
-	private ImageView btnBlur;
+	private ImageView btnFilter;
 
 	@FXML
 	private ImageView imgImageViewer;
@@ -164,8 +164,8 @@ public class MainViewController {
 	}
 
 	@FXML
-	void btnBlurClicked(MouseEvent event) {
-		changeTool(Tool.BLUR, event);
+	void btnFilterClicked(MouseEvent event) {
+		changeTool(Tool.FILTER, event);
 	}
 
 	@FXML
@@ -199,13 +199,13 @@ public class MainViewController {
 	}
 
 	@FXML
-	void btnBlurStartHover(MouseEvent event) {
-		hoverEffect(Tool.BLUR, event);
+	void btnFilterStartHover(MouseEvent event) {
+		hoverEffect(Tool.FILTER, event);
 	}
 
 	@FXML
-	void btnBlurEndHover(MouseEvent event) {
-		hoverEffect(Tool.BLUR, event);
+	void btnFilterEndHover(MouseEvent event) {
+		hoverEffect(Tool.FILTER, event);
 	}
 	
 	@FXML

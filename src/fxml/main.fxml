@@ -56,9 +56,9 @@
                         <Image url="@../ico/icoContrastDeselected.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="btnBlur" fitHeight="50.0" fitWidth="50.0" layoutY="150.0" onMouseClicked="#btnBlurClicked" onMouseEntered="#btnBlurStartHover" onMouseExited="#btnBlurEndHover" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="btnFilter" fitHeight="50.0" fitWidth="50.0" layoutY="150.0" onMouseClicked="#btnFilterClicked" onMouseEntered="#btnFilterStartHover" onMouseExited="#btnFilterEndHover" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../ico/icoBlurDeselected.png" />
+                        <Image url="@../ico/icoFilterDeselected.png" />
                      </image>
                   </ImageView>
                </children>
@@ -66,7 +66,7 @@
         <AnchorPane fx:id="pneToolPane" maxWidth="206.0" prefHeight="751.0" prefWidth="206.0" />
             <Pane prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <ImageView fx:id="imgImageViewer" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="imgImageViewer" fitHeight="731.0" fitWidth="602.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
                </children>
                <padding>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
