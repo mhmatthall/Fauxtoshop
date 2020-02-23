@@ -1,2 +1,2 @@
-# cs255
-Fake photoshop for CS-255
+# Fauxtoshop
+Basic image editing software, created as coursework for CS-255 Computer Graphics at Swansea University
